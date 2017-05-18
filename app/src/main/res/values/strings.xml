@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Produção Fácil</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <string name="facebook_app_id">124969894738879</string>
+    <string name="fb_login_protocol_scheme">fb124969894738879</string>
+
+    <string name="sign_in_cancelled">Você cancelou o login</string>
+    <string name="no_internet_connection">Você precisa estar conectado a internet.</string>
+    <string name="unknown_error">Erro desconhecido.</string>
+    <string name="unknown_sign_in_response">Erro desconhecido ao logar.</string>
+    <string name="sing_in_success">Logou com sucesso.</string>
+
+</resources>

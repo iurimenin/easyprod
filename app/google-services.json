@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "67001413339",
+    "firebase_url": "https://easyprod-b8c81.firebaseio.com",
+    "project_id": "easyprod-b8c81",
+    "storage_bucket": "easyprod-b8c81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67001413339:android:b3e798f4ee98ab6e",
+        "android_client_info": {
+          "package_name": "io.github.iurimenin.easyprod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67001413339-7vmovau5e2tcep9u3vtevq1hvk7e97s4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvukhesEhj88-Wj2qVL2Dn0q8USyQAxN0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
