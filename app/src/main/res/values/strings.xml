@@ -22,5 +22,12 @@
     <string name="unknown_error">Erro desconhecido.</string>
     <string name="unknown_sign_in_response">Erro desconhecido ao logar.</string>
     <string name="sing_in_success">Logou com sucesso.</string>
+    <string name="button_add_farm">Add Farm</string>
+    <string name="new_farm">New Farm</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_save">Save</string>
+    <string name="farm_name">Farm name</string>
+    <string name="logout">Logout</string>
+    <string name="about">About</string>
 
 </resources>

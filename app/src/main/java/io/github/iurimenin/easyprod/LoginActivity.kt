@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod.view
+package io.github.iurimenin.easyprod
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.firebase.ui.auth.ResultCodes
 import com.google.firebase.auth.FirebaseAuth
-import io.github.iurimenin.easyprod.R
+import io.github.iurimenin.easyprod.farm.view.FarmActivity
 import java.util.*
 
 
@@ -31,8 +31,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun startMain() {
-        val i = Intent(this, MainActivity::class.java)
+        val i = Intent(this, FarmActivity::class.java)
         startActivity(i)
+        finish()
     }
 
     private fun startLogin() {
@@ -40,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setIsSmartLockEnabled(false)
+                        .setTheme(R.style.GreenTheme)
                         .setProviders(
                                 Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                         AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
@@ -48,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                 RC_SIGN_IN)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
         if (requestCode == RC_SIGN_IN) {
@@ -56,14 +58,13 @@ class LoginActivity : AppCompatActivity() {
 
             // Successfully signed in
             if (resultCode == ResultCodes.OK) {
-                showSnackbar(R.string.sing_in_success)
                 startMain()
                 return
             } else {
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
-                    showSnackbar(R.string.sign_in_cancelled)
+                    finish()
                     return
                 }
 

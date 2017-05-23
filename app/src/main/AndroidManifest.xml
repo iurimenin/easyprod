@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.github.iurimenin.easyprod">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -11,14 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.LoginActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity"></activity>
+        <activity
+            android:name="io.github.iurimenin.easyprod.farm.view.FarmActivity"
+            android:launchMode="singleInstance"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            tools:replace="android:value"
+            android:value="@string/facebook_app_id" />
     </application>
 
 </manifest>

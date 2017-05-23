@@ -7,22 +7,30 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "io.github.iurimenin.easyprod"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 ext {
     firebaseVersion = "10.2.0"
+    firebaseUIVersion = "1.2.0"
 }
 
 dependencies {
@@ -40,11 +48,12 @@ dependencies {
     compile "com.google.firebase:firebase-database:${firebaseVersion}"
     compile "com.google.firebase:firebase-crash:${firebaseVersion}"
 
-    // FirebaseUI Database only
-    compile 'com.firebaseui:firebase-ui-database:1.2.0'
+    compile "com.firebaseui:firebase-ui-database:${firebaseUIVersion}"
+    compile "com.firebaseui:firebase-ui-auth:${firebaseUIVersion}"
 
-    // FirebaseUI Auth only
-    compile 'com.firebaseui:firebase-ui-auth:1.2.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
+    compile 'com.malinskiy:superrecyclerview:1.1.4'
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android-extensions'
