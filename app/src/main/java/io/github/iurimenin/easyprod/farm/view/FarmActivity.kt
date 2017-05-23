@@ -106,8 +106,6 @@ class FarmActivity : AppCompatActivity() {
     }
 
     private fun updateFarm(key : String, name :String) {
-
-
         var builder = MaterialDialog.Builder(this)
                 .title(R.string.new_farm)
                 .titleColorRes(R.color.colorPrimary)
@@ -119,6 +117,7 @@ class FarmActivity : AppCompatActivity() {
                 .negativeText(R.string.text_cancel)
                 .autoDismiss(false)
                 .onAny { materialDialog, dialogAction ->  saveFarm(materialDialog, dialogAction) }
+
         var textViewFarmKey = builder.build().findViewById(R.id.textViewFarmKey) as TextView
         textViewFarmKey.text = key
         var materialEditTextFarmName =
