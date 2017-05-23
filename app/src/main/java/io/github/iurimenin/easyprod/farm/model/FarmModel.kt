@@ -13,11 +13,9 @@ class FarmModel () {
     var name: String = ""
 
     constructor( key: String, name: String = "") : this() {
-
         this.key = key
         this.name = name
     }
-
 
     @Exclude
     fun  save() {
@@ -27,7 +25,7 @@ class FarmModel () {
         if (key.isNullOrEmpty())
             key = myRef.push().getKey()
 
-        myRef.child(key).setValue(this);
+        myRef.child(key).setValue(this)
     }
 
     override fun equals(other: Any?): Boolean {
