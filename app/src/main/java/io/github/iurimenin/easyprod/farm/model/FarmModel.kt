@@ -23,7 +23,7 @@ class FarmModel () {
         val myRef = farmUtils.getFarmReference()
 
         if (key.isNullOrEmpty())
-            key = myRef.push().getKey()
+            key = myRef.push().key
 
         myRef.child(key).setValue(this)
     }

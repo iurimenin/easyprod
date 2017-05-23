@@ -15,7 +15,7 @@ import java.util.*
 
 class LoginActivity : AppCompatActivity() {
 
-    private val RC_SIGN_IN = 1;
+    private val RC_SIGN_IN = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

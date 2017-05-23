@@ -42,11 +42,10 @@ class FarmAdapter(val mFarms: ArrayList<FarmModel>, val itemClick: (FarmModel) -
 
     fun  updateItem(updated: FarmModel) {
 
-        for (farm in mFarms){
-            if (farm.key.equals(updated.key))
-                farm.name = updated.name
-        }
-        this.notifyDataSetChanged();
+        mFarms
+                .filter { it.key == updated.key }
+                .forEach { it.name = updated.name }
+        this.notifyDataSetChanged()
     }
 
     fun removeItem(farm: FarmModel) {

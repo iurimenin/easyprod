@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/authui_colorAccent"
         android:clickable="true"
         android:contentDescription="@string/button_add_farm"
         android:focusable="true"

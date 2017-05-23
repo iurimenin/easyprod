@@ -13,28 +13,24 @@ class FarmUtils {
 
     private val FARM_REFERENCE = "farms/"
 
+    private var  mUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
+
     companion object {
 
         @JvmStatic var mFirebaseDatabase: FirebaseDatabase = getStaticFirebase()
 
         private fun getStaticFirebase() :FirebaseDatabase {
 
-            var firebasedatabase = FirebaseDatabase.getInstance()
+            val firebasedatabase = FirebaseDatabase.getInstance()
             firebasedatabase.setPersistenceEnabled(true)
             return firebasedatabase
         }
 
     }
 
-    private var  mUser: FirebaseUser
-
-    init {
-        mUser = FirebaseAuth.getInstance().currentUser!!
-    }
-
     fun getFarmReference(): DatabaseReference {
 
-        var sb = StringBuilder()
+        val sb = StringBuilder()
         sb.append(FARM_REFERENCE)
         sb.append(getEmailWithouDots())
         val reference = mFirebaseDatabase.getReference(sb.toString())

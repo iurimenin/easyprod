@@ -92,6 +92,10 @@ class FarmActivity : AppCompatActivity() {
     private fun addFarm() {
         MaterialDialog.Builder(this)
                 .title(R.string.new_farm)
+                .titleColorRes(R.color.colorPrimary)
+                .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
+                .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
+                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
                 .customView(R.layout.new_farm_view, true)
                 .positiveText(R.string.text_save)
                 .negativeText(R.string.text_cancel)

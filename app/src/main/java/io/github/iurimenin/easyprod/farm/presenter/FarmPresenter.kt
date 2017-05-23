@@ -10,7 +10,7 @@ import io.github.iurimenin.easyprod.farm.view.FarmActivity
 /**
  * Created by Iuri Menin on 23/05/17.
  */
-class FarmPresenter () {
+class FarmPresenter {
 
     private var farmActivity: FarmActivity? = null
 
