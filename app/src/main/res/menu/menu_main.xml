@@ -3,18 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        app:showAsAction="ifRoom"
-        android:id="@+id/menuItemAbout"
         android:orderInCategory="1"
         android:title="@string/about"
+        android:id="@+id/menuItemAbout"
         android:menuCategory="container"
-        android:icon="@drawable/ic_information_outline_white_24dp"/>
+        android:icon="@drawable/ic_information_outline_white_24dp"
+        app:showAsAction="ifRoom"/>
 
     <item
-        app:showAsAction="ifRoom"
-        android:id="@+id/menuItemLogout"
         android:orderInCategory="2"
         android:title="@string/logout"
         android:menuCategory="container"
-        android:icon="@drawable/ic_logout_white_24dp"/>
+        android:id="@+id/menuItemLogout"
+        android:icon="@drawable/ic_logout_white_24dp"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:visible="false"
+        android:orderInCategory="3"
+        android:title="@string/edit"
+        android:menuCategory="container"
+        android:id="@+id/menuItemEdit"
+        android:icon="@drawable/ic_edit_white_24dp"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:visible="false"
+        android:orderInCategory="4"
+        android:title="@string/delete"
+        android:menuCategory="container"
+        android:id="@+id/menuItemDelete"
+        android:icon="@drawable/ic_delete_white_24dp"
+        app:showAsAction="ifRoom"/>
 </menu>

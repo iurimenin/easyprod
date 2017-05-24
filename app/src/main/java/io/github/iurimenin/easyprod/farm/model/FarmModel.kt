@@ -1,5 +1,7 @@
 package io.github.iurimenin.easyprod.farm.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.firebase.database.Exclude
 import io.github.iurimenin.easyprod.farm.util.FarmUtils
 
@@ -7,18 +9,39 @@ import io.github.iurimenin.easyprod.farm.util.FarmUtils
  * Created by Iuri Menin on 22/05/17.
  */
 
-class FarmModel () {
+class FarmModel() : Parcelable {
 
     var key: String = ""
     var name: String = ""
 
-    constructor( key: String, name: String = "") : this() {
+    companion object {
+        @JvmStatic val TAG = this::javaClass.name
+
+        @JvmField val CREATOR: Parcelable.Creator<FarmModel> = object : Parcelable.Creator<FarmModel> {
+            override fun createFromParcel(source: Parcel): FarmModel = FarmModel(source)
+            override fun newArray(size: Int): Array<FarmModel?> = arrayOfNulls(size)
+        }
+    }
+
+    constructor(source: Parcel) : this(
+            source.readString(),
+            source.readString()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeString(this.key)
+        dest.writeString(this.name)
+    }
+
+    constructor(key: String, name: String = "") : this() {
         this.key = key
         this.name = name
     }
 
     @Exclude
-    fun  save() {
+    fun save() {
         val farmUtils = FarmUtils()
         val myRef = farmUtils.getFarmReference()
 
@@ -42,5 +65,4 @@ class FarmModel () {
     override fun hashCode(): Int {
         return key.hashCode()
     }
-
 }

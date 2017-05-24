@@ -29,5 +29,8 @@
     <string name="farm_name">Farm name</string>
     <string name="logout">Logout</string>
     <string name="about">About</string>
+    <string name="button_add_area">Add Area</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
 </resources>

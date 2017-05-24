@@ -13,6 +13,7 @@ import io.github.iurimenin.easyprod.farm.view.FarmActivity
 class FarmPresenter {
 
     private var farmActivity: FarmActivity? = null
+    private val farmRef = FarmUtils().getFarmReference()
 
     fun  bindView(farmActivity: FarmActivity) {
         this.farmActivity = farmActivity
@@ -24,7 +25,6 @@ class FarmPresenter {
 
     fun loadFarms() {
 
-        val farmRef = FarmUtils().getFarmReference()
         farmRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val vo = dataSnapshot.getValue(FarmModel::class.java)
@@ -50,4 +50,8 @@ class FarmPresenter {
         })
     }
 
+    fun deleteSelectedItems(selectedItens: ArrayList<FarmModel>) {
+        for (item in selectedItens)
+            farmRef.child(item.key).removeValue()
+    }
 }
