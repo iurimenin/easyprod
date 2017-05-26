@@ -1,36 +1,25 @@
-package io.github.iurimenin.easyprod.farm.view
+package io.github.iurimenin.easyprod.app.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
 import android.widget.TextView
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
-import com.firebase.ui.auth.AuthUI
 import com.rengwuxian.materialedittext.MaterialEditText
-import io.github.iurimenin.easyprod.CallbackInterface
-import io.github.iurimenin.easyprod.LoginActivity
 import io.github.iurimenin.easyprod.R
-import io.github.iurimenin.easyprod.area.view.AreaActivity
-import io.github.iurimenin.easyprod.farm.model.FarmModel
-import io.github.iurimenin.easyprod.farm.presenter.FarmPresenter
-import io.github.iurimenin.easyprod.farm.util.FarmAdapter
-import kotlinx.android.synthetic.main.activity_main.*
-
+import io.github.iurimenin.easyprod.app.model.FarmModel
+import io.github.iurimenin.easyprod.app.presenter.FarmPresenter
+import io.github.iurimenin.easyprod.app.util.CallbackInterface
+import kotlinx.android.synthetic.main.activity_farms.*
 
 /**
  * Created by Iuri Menin on 18/05/17.
  */
 class FarmActivity : AppCompatActivity(), CallbackInterface {
-
-    override fun executeCallback() {
-        updateMenuIcons()
-    }
 
     private var mPresenter: FarmPresenter? = null
     private var mMenuItemAbout: MenuItem? = null
@@ -39,12 +28,12 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
     private var mMenuItemEdit: MenuItem? = null
 
     private val mAdapter: FarmAdapter = FarmAdapter(this, ArrayList<FarmModel>()) {
-        clickItem(it)
+        mPresenter?.clickItem(it)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_farms)
 
         floatingActionButtonAddFarm.setOnClickListener({ addFarm() })
 
@@ -66,12 +55,12 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_farm, menu)
 
-        mMenuItemAbout = menu.findItem(R.id.menuItemAbout);
-        mMenuItemLogout = menu.findItem(R.id.menuItemLogout);
-        mMenuItemDelete = menu.findItem(R.id.menuItemDelete);
-        mMenuItemEdit = menu.findItem(R.id.menuItemEdit);
+        mMenuItemAbout = menu.findItem(R.id.menuMainItemAbout);
+        mMenuItemLogout = menu.findItem(R.id.menuMainItemLogout);
+        mMenuItemDelete = menu.findItem(R.id.menuMainItemDelete);
+        mMenuItemEdit = menu.findItem(R.id.menuMainItemEdit);
 
         return true
     }
@@ -79,13 +68,17 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         when (item?.itemId) {
-            R.id.menuItemLogout -> logout()
+            R.id.menuMainItemLogout -> mPresenter?.logout()
 
-            R.id.menuItemEdit -> updateFarm()
+            R.id.menuMainItemEdit -> updateFarm()
 
-            R.id.menuItemDelete -> mPresenter?.deleteSelectedItems(mAdapter.selectedItens)
+            R.id.menuMainItemDelete -> mPresenter?.deleteSelectedItems(mAdapter.selectedItens)
         }
         return true
+    }
+
+    override fun executeCallback() {
+        updateMenuIcons()
     }
 
     fun addItem(vo: FarmModel) {
@@ -101,37 +94,8 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
         updateMenuIcons()
     }
 
-    private fun logout() {
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener {
-                    // user is now signed out
-                    startActivity(Intent(this@FarmActivity, LoginActivity::class.java))
-                    finish()
-                }
-    }
-
-    private fun addFarm() {
-        MaterialDialog.Builder(this)
-                .title(R.string.new_farm)
-                .titleColorRes(R.color.colorPrimary)
-                .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
-                .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
-                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .customView(R.layout.new_farm_view, true)
-                .positiveText(R.string.text_save)
-                .negativeText(R.string.text_cancel)
-                .autoDismiss(false)
-                .onAny { materialDialog, dialogAction ->  saveFarm(materialDialog, dialogAction) }
-                .show()
-    }
-
-    private fun clickItem (farmModel: FarmModel) {
-
-        val i = Intent(this, AreaActivity::class.java)
-        i.putExtra(FarmModel.TAG, farmModel)
-        startActivity(i)
-        finish()
+    fun removeSelecionts () {
+        mAdapter.removeSelecionts()
     }
 
     private fun updateMenuIcons() {
@@ -161,6 +125,22 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
         }
     }
 
+    private fun addFarm() {
+        MaterialDialog.Builder(this)
+                .title(R.string.new_farm)
+                .titleColorRes(R.color.colorPrimary)
+                .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
+                .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
+                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .customView(R.layout.new_farm_view, true)
+                .positiveText(R.string.text_save)
+                .negativeText(R.string.text_cancel)
+                .autoDismiss(false)
+                .onAny { materialDialog, dialogAction ->
+                    mPresenter?.saveFarm(materialDialog, dialogAction == DialogAction.POSITIVE) }
+                .show()
+    }
+
     private fun updateFarm() {
         //We can select index 0 because the edit item will only be visible
         // when only 1 item is selected
@@ -176,7 +156,8 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
                 .positiveText(R.string.text_save)
                 .negativeText(R.string.text_cancel)
                 .autoDismiss(false)
-                .onAny { materialDialog, dialogAction ->  saveFarm(materialDialog, dialogAction) }
+                .onAny { materialDialog, dialogAction ->
+                    mPresenter?.saveFarm(materialDialog, dialogAction == DialogAction.POSITIVE) }
 
         val textViewFarmKey = builder.build().findViewById(R.id.textViewFarmKey) as TextView
         textViewFarmKey.text = farm.key
@@ -185,29 +166,5 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
         materialEditTextFarmName.setText(farm.name)
 
         builder.show()
-    }
-
-    private fun saveFarm(materialDialog: MaterialDialog, dialogAction: DialogAction) {
-
-        if (dialogAction == DialogAction.POSITIVE) {
-
-            val editTextFarmName: EditText =
-                    materialDialog.findViewById(R.id.materialEditTextFarmName) as EditText
-
-            val textViewFarmKey: TextView =
-                    materialDialog.findViewById(R.id.textViewFarmKey) as TextView
-
-            val farmName = editTextFarmName.text.toString()
-            if (farmName.isNullOrEmpty())
-                editTextFarmName.error = getString(R.string.error_field_required)
-            else {
-
-                val farm = FarmModel(textViewFarmKey.text.toString(), farmName)
-                farm.save()
-                materialDialog.dismiss()
-            }
-        } else {
-            materialDialog.dismiss()
-        }
     }
 }

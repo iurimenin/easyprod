@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod
+package io.github.iurimenin.easyprod.app.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.firebase.ui.auth.ResultCodes
 import com.google.firebase.auth.FirebaseAuth
-import io.github.iurimenin.easyprod.farm.view.FarmActivity
+import io.github.iurimenin.easyprod.R
 import java.util.*
 
 

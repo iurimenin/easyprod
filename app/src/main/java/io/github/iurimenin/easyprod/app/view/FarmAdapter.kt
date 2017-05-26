@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod.farm.util
+package io.github.iurimenin.easyprod.app.view
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.github.iurimenin.easyprod.CallbackInterface
 import io.github.iurimenin.easyprod.R
-import io.github.iurimenin.easyprod.farm.model.FarmModel
+import io.github.iurimenin.easyprod.app.model.FarmModel
+import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import kotlinx.android.synthetic.main.item_farm.view.*
 
 /**
@@ -23,10 +23,10 @@ class FarmAdapter(val mCallback : CallbackInterface,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_farm, parent, false)
-        return FarmAdapter.ViewHolder(view, clickListener)
+        return ViewHolder(view, clickListener)
     }
 
-    override fun onBindViewHolder(holder: FarmAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindFarm(mFarms[position], selectedItens, holder.itemView.context, mCallback)
     }
 
@@ -49,11 +49,13 @@ class FarmAdapter(val mCallback : CallbackInterface,
                 itemView.constraintLayoutItemFarm.setOnLongClickListener {
                     selectDeselectItem(itemView, farm, selectedItens, context, callback); true
                 }
+
+                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons));
             }
         }
 
         private fun selectDeselectItem(itemView: View?, farm: FarmModel,
-                               selectedItens: ArrayList<FarmModel>, context: Context,
+                                       selectedItens: ArrayList<FarmModel>, context: Context,
                                        callback : CallbackInterface) {
             if(selectedItens.contains(farm)){
                 selectedItens.remove(farm);
@@ -83,6 +85,12 @@ class FarmAdapter(val mCallback : CallbackInterface,
     fun removeItem(farm: FarmModel) {
         mFarms.remove(farm)
         selectedItens.remove(farm)
+        this.notifyDataSetChanged()
+    }
+
+    fun removeSelecionts() {
+        selectedItens.clear()
+        mCallback.executeCallback()
         this.notifyDataSetChanged()
     }
 }

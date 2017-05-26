@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    android:id="@+id/constraintLayoutItemFarm"
+    android:id="@+id/constraintLayoutItemField"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,13 +9,13 @@
     android:background="?android:attr/selectableItemBackground">
 
     <TextView
-        android:id="@+id/textViewFarm"
+        android:id="@+id/textViewField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/farm_name"
+        android:text="@string/field_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,6 +27,6 @@
         android:layout_height="1dp"
         android:layout_width="match_parent"
         android:background="@color/colorDivider"
-        app:layout_constraintTop_toBottomOf="@id/textViewFarm"/>
+        app:layout_constraintTop_toBottomOf="@id/textViewField"/>
 
 </android.support.constraint.ConstraintLayout>
