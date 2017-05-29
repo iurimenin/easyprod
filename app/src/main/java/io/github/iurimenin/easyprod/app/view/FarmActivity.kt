@@ -1,5 +1,6 @@
 package io.github.iurimenin.easyprod.app.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
+import com.firebase.ui.auth.AuthUI
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.model.FarmModel
@@ -43,9 +45,9 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
         if (mPresenter == null)
             mPresenter = FarmPresenter()
 
-        mPresenter?.bindView(this)
+        mPresenter?.bindView(this, mAdapter)
         mPresenter?.loadFarms()
-        updateMenuIcons()
+        this.updateMenuIcons()
     }
 
     override fun onDestroy() {
@@ -57,10 +59,10 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_farm, menu)
 
-        mMenuItemAbout = menu.findItem(R.id.menuMainItemAbout);
-        mMenuItemLogout = menu.findItem(R.id.menuMainItemLogout);
-        mMenuItemDelete = menu.findItem(R.id.menuMainItemDelete);
-        mMenuItemEdit = menu.findItem(R.id.menuMainItemEdit);
+        mMenuItemAbout = menu.findItem(R.id.menuMainItemAbout)
+        mMenuItemLogout = menu.findItem(R.id.menuMainItemLogout)
+        mMenuItemDelete = menu.findItem(R.id.menuMainItemDelete)
+        mMenuItemEdit = menu.findItem(R.id.menuMainItemEdit)
 
         return true
     }
@@ -68,59 +70,38 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         when (item?.itemId) {
-            R.id.menuMainItemLogout -> mPresenter?.logout()
+            R.id.menuMainItemLogout -> this.logout()
 
-            R.id.menuMainItemEdit -> updateFarm()
+            R.id.menuMainItemEdit -> this.updateFarm()
 
             R.id.menuMainItemDelete -> mPresenter?.deleteSelectedItems(mAdapter.selectedItens)
         }
         return true
     }
 
-    override fun executeCallback() {
-        updateMenuIcons()
-    }
-
-    fun addItem(vo: FarmModel) {
-        mAdapter.addItem(vo)
-    }
-
-    fun updateItem(updated: FarmModel) {
-        mAdapter.updateItem(updated)
-    }
-
-    fun removeItem(removed: FarmModel) {
-        mAdapter.removeItem(removed)
-        updateMenuIcons()
-    }
-
-    fun removeSelecionts () {
-        mAdapter.removeSelecionts()
-    }
-
-    private fun updateMenuIcons() {
+    override fun updateMenuIcons() {
 
         when (mAdapter.selectedItens.size) {
 
             0 -> {
-                mMenuItemDelete?.setVisible(false)
-                mMenuItemEdit?.setVisible(false)
-                mMenuItemAbout?.setVisible(true)
-                mMenuItemLogout?.setVisible(true)
+                mMenuItemDelete?.isVisible = false
+                mMenuItemEdit?.isVisible = false
+                mMenuItemAbout?.isVisible = true
+                mMenuItemLogout?.isVisible = true
             }
 
             1 -> {
-                mMenuItemDelete?.setVisible(true)
-                mMenuItemEdit?.setVisible(true)
-                mMenuItemAbout?.setVisible(false)
-                mMenuItemLogout?.setVisible(false)
+                mMenuItemDelete?.isVisible = true
+                mMenuItemEdit?.isVisible = true
+                mMenuItemAbout?.isVisible = false
+                mMenuItemLogout?.isVisible = false
             }
 
             !in(0..1) -> {
-                mMenuItemDelete?.setVisible(true)
-                mMenuItemEdit?.setVisible(false)
-                mMenuItemAbout?.setVisible(false)
-                mMenuItemLogout?.setVisible(false)
+                mMenuItemDelete?.isVisible = true
+                mMenuItemEdit?.isVisible = false
+                mMenuItemAbout?.isVisible = false
+                mMenuItemLogout?.isVisible = false
             }
         }
     }
@@ -166,5 +147,15 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
         materialEditTextFarmName.setText(farm.name)
 
         builder.show()
+    }
+
+    private fun logout() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener {
+                    // user is now signed out
+                    this.startActivity(Intent(this, LoginActivity::class.java))
+                    this.finish()
+                }
     }
 }

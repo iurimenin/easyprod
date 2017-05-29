@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.iurimenin.easyprod.R
-import io.github.iurimenin.easyprod.app.model.FarmModel
 import io.github.iurimenin.easyprod.app.model.FieldModel
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import kotlinx.android.synthetic.main.item_field.view.*
@@ -50,7 +49,7 @@ class FieldAdapter(val mCallback : CallbackInterface,
                 itemView.constraintLayoutItemField.setOnLongClickListener {
                     selectDeselectItem(itemView, field, selectedItens, context, callback); true
                 }
-                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons));
+                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons))
             }
         }
 
@@ -58,14 +57,14 @@ class FieldAdapter(val mCallback : CallbackInterface,
                                        selectedItens: ArrayList<FieldModel>, context: Context,
                                        callback : CallbackInterface) {
             if(selectedItens.contains(field)){
-                selectedItens.remove(field);
-                itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons));
+                selectedItens.remove(field)
+                itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons))
             } else {
-                selectedItens.add(field);
-                itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDivider));
+                selectedItens.add(field)
+                itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDivider))
             }
 
-            callback.executeCallback()
+            callback.updateMenuIcons()
         }
     }
 
@@ -78,7 +77,10 @@ class FieldAdapter(val mCallback : CallbackInterface,
 
         mFields
                 .filter { it.key == updated.key }
-                .forEach { it.name = updated.name }
+                .forEach {
+                    it.name = updated.name
+                    it.totalArea = updated.totalArea
+                }
         this.notifyDataSetChanged()
     }
 
@@ -90,7 +92,7 @@ class FieldAdapter(val mCallback : CallbackInterface,
 
     fun removeSelecionts() {
         selectedItens.clear()
-        mCallback.executeCallback()
+        mCallback.updateMenuIcons()
         this.notifyDataSetChanged()
     }
 }

@@ -8,15 +8,16 @@ import io.github.iurimenin.easyprod.app.util.FirebaseUtils
 /**
  * Created by Iuri Menin on 24/05/17.
  */
-class FieldModel(var key: String, var name: String) : Parcelable {
+class FieldModel(var key: String, var name: String, var totalArea : Double) : Parcelable {
 
-    constructor() : this("", "") {
+    constructor() : this("", "", 0.00) {
         //Firebase needs the constructor without parameters
     }
 
     constructor(source: Parcel) : this(
             source.readString(),
-            source.readString()
+            source.readString(),
+            source.readDouble()
     )
 
     companion object {
@@ -34,6 +35,7 @@ class FieldModel(var key: String, var name: String) : Parcelable {
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(this.key)
         dest.writeString(this.name)
+        dest.writeDouble(this.totalArea)
     }
 
     override fun equals(other: Any?): Boolean {

@@ -15,6 +15,7 @@ import io.github.iurimenin.easyprod.app.model.FarmModel
 import io.github.iurimenin.easyprod.app.model.FieldModel
 import io.github.iurimenin.easyprod.app.presenter.FieldPresenter
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
+import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
 import kotlinx.android.synthetic.main.activity_fields.*
 
 class FieldActivity : AppCompatActivity(), CallbackInterface {
@@ -44,7 +45,7 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
         if (mPresenter == null)
             mPresenter = FieldPresenter(mFarm?.key)
 
-        mPresenter?.bindView(this)
+        mPresenter?.bindView(this, mAdapter)
         mPresenter?.loadFields()
         updateMenuIcons()
     }
@@ -58,8 +59,8 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_field, menu)
 
-        mMenuItemDelete = menu.findItem(R.id.menuFieldItemDelete);
-        mMenuItemEdit = menu.findItem(R.id.menuFieldItemEdit);
+        mMenuItemDelete = menu.findItem(R.id.menuFieldItemDelete)
+        mMenuItemEdit = menu.findItem(R.id.menuFieldItemEdit)
 
         return true
     }
@@ -74,44 +75,23 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
         return true
     }
 
-    override fun executeCallback() {
-        updateMenuIcons()
-    }
-
-    fun addItem(vo: FieldModel) {
-        mAdapter.addItem(vo)
-    }
-
-    fun updateItem(updated: FieldModel) {
-        mAdapter.updateItem(updated)
-    }
-
-    fun removeItem(removed: FieldModel) {
-        mAdapter.removeItem(removed)
-        updateMenuIcons()
-    }
-
-    fun removeSelecionts () {
-        mAdapter.removeSelecionts()
-    }
-
-    private fun updateMenuIcons() {
+    override fun updateMenuIcons() {
 
         when (mAdapter.selectedItens.size) {
 
             0 -> {
-                mMenuItemDelete?.setVisible(false)
-                mMenuItemEdit?.setVisible(false)
+                mMenuItemDelete?.isVisible = false
+                mMenuItemEdit?.isVisible = false
             }
 
             1 -> {
-                mMenuItemDelete?.setVisible(true)
-                mMenuItemEdit?.setVisible(true)
+                mMenuItemDelete?.isVisible = true
+                mMenuItemEdit?.isVisible = true
             }
 
             !in(0..1) -> {
-                mMenuItemDelete?.setVisible(true)
-                mMenuItemEdit?.setVisible(false)
+                mMenuItemDelete?.isVisible = true
+                mMenuItemEdit?.isVisible = false
             }
         }
     }
@@ -155,6 +135,10 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
         val materialEditTextFieldName =
                 builder.build().findViewById(R.id.materialEditTextFieldName) as MaterialEditText
         materialEditTextFieldName.setText(field.name)
+
+        val materialEditTextFieldArea: MoneyMaskMaterialEditText =
+                builder.build().findViewById(R.id.materialEditTextFieldArea) as MoneyMaskMaterialEditText
+        materialEditTextFieldArea.setTextFromDouble(field.totalArea)
 
         builder.show()
     }

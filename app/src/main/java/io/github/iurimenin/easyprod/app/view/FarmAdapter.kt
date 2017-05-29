@@ -50,7 +50,7 @@ class FarmAdapter(val mCallback : CallbackInterface,
                     selectDeselectItem(itemView, farm, selectedItens, context, callback); true
                 }
 
-                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons));
+                itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons))
             }
         }
 
@@ -58,14 +58,14 @@ class FarmAdapter(val mCallback : CallbackInterface,
                                        selectedItens: ArrayList<FarmModel>, context: Context,
                                        callback : CallbackInterface) {
             if(selectedItens.contains(farm)){
-                selectedItens.remove(farm);
-                itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons));
+                selectedItens.remove(farm)
+                itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons))
             } else {
-                selectedItens.add(farm);
-                itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDivider));
+                selectedItens.add(farm)
+                itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDivider))
             }
 
-            callback.executeCallback()
+            callback.updateMenuIcons()
         }
     }
 
@@ -90,7 +90,7 @@ class FarmAdapter(val mCallback : CallbackInterface,
 
     fun removeSelecionts() {
         selectedItens.clear()
-        mCallback.executeCallback()
+        mCallback.updateMenuIcons()
         this.notifyDataSetChanged()
     }
 }

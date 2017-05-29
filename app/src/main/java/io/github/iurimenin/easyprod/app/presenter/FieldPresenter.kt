@@ -1,35 +1,44 @@
 package io.github.iurimenin.easyprod.app.presenter
 
-import android.widget.EditText
+import android.content.Context
 import android.widget.TextView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.model.FieldModel
+import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.FirebaseUtils
+import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
 import io.github.iurimenin.easyprod.app.view.FieldActivity
+import io.github.iurimenin.easyprod.app.view.FieldAdapter
 
 /**
  * Created by Iuri Menin on 25/05/17.
  */
 class FieldPresenter(var mFarmKey : String?) {
 
-    private var mFieldActivity: FieldActivity? = null
+    private var mAdapter: FieldAdapter? = null
+    private var mCallback: CallbackInterface? = null
+    private var mContext: Context? = null
     private val mFieldRef = FirebaseUtils().getFieldReference(mFarmKey!!)
 
-    fun  bindView(fieldActivity: FieldActivity) {
-        this.mFieldActivity = fieldActivity
+    fun  bindView(fieldActivity: FieldActivity, adapter :FieldAdapter) {
+        this.mAdapter = adapter
+        this.mContext = fieldActivity
+        this.mCallback = fieldActivity
     }
 
     fun unBindView() {
-        this.mFieldActivity = null
+        this.mAdapter = null
+        this.mCallback = null
     }
 
     fun  clickItem(it: FieldModel) {
-        Toast.makeText(mFieldActivity, "Click", Toast.LENGTH_SHORT).show()
+        Toast.makeText(mContext!!, "Vai abrir a tela de produções", Toast.LENGTH_SHORT).show()
     }
 
     fun loadFields() {
@@ -37,18 +46,19 @@ class FieldPresenter(var mFarmKey : String?) {
         mFieldRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val vo = dataSnapshot.getValue(FieldModel::class.java)
-                mFieldActivity?.addItem(vo)
+                mAdapter?.addItem(vo)
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
 
                 val updated = dataSnapshot.getValue(FieldModel::class.java)
-                mFieldActivity?.updateItem(updated)
+                mAdapter?.updateItem(updated)
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
                 val removed = dataSnapshot.getValue(FieldModel::class.java)
-                mFieldActivity?.removeItem(removed)
+                mAdapter?.removeItem(removed)
+                mCallback?.updateMenuIcons()
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
@@ -63,21 +73,31 @@ class FieldPresenter(var mFarmKey : String?) {
 
         if (isPositive) {
 
-            val editTextFieldName: EditText =
-                    materialDialog.findViewById(R.id.materialEditTextFieldName) as EditText
-
             val textViewFieldKey: TextView =
                     materialDialog.findViewById(R.id.textViewFieldKey) as TextView
 
-            val farmName = editTextFieldName.text.toString()
-            if (farmName.isNullOrEmpty())
-                editTextFieldName.error = this.mFieldActivity?.getString(R.string.error_field_required)
+            val materialEditTextFieldName: MaterialEditText =
+                    materialDialog.findViewById(R.id.materialEditTextFieldName) as MaterialEditText
+
+            val materialEditTextFieldArea: MoneyMaskMaterialEditText =
+                    materialDialog.findViewById(R.id.materialEditTextFieldArea)
+                            as MoneyMaskMaterialEditText
+
+            val fieldName = materialEditTextFieldName.text.toString()
+            val fieldArea = materialEditTextFieldArea.text.toString()
+            if (fieldName.isNullOrEmpty())
+                materialEditTextFieldName.error =
+                        this.mContext?.getString(R.string.error_field_required)
+            else if (fieldArea.isNullOrEmpty() || materialEditTextFieldArea.double == 0.0)
+                materialEditTextFieldArea.error =
+                        this.mContext?.getString(R.string.error_field_required_and_bigger_than_0)
             else {
 
-                val field = FieldModel(textViewFieldKey.text.toString(), farmName)
+                val field = FieldModel(textViewFieldKey.text.toString(), fieldName,
+                        materialEditTextFieldArea.double)
                 field.save(mFarmKey!!)
                 materialDialog.dismiss()
-                mFieldActivity?.removeSelecionts()
+                mAdapter?.removeSelecionts()
             }
         } else {
             materialDialog.dismiss()
