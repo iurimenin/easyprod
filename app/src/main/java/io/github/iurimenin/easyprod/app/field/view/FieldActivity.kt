@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod.app.view
+package io.github.iurimenin.easyprod.app.field.view
 
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -11,9 +11,9 @@ import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
-import io.github.iurimenin.easyprod.app.model.FarmModel
-import io.github.iurimenin.easyprod.app.model.FieldModel
-import io.github.iurimenin.easyprod.app.presenter.FieldPresenter
+import io.github.iurimenin.easyprod.app.farm.model.FarmModel
+import io.github.iurimenin.easyprod.app.field.model.FieldModel
+import io.github.iurimenin.easyprod.app.field.presenter.FieldPresenter
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
 import kotlinx.android.synthetic.main.activity_fields.*

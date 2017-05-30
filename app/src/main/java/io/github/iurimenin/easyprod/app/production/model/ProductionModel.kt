@@ -1,7 +1,8 @@
-package io.github.iurimenin.easyprod.app.model
+package io.github.iurimenin.easyprod.app.production.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import io.github.iurimenin.easyprod.app.field.model.FieldModel
 
 /**
  * Created by Iuri Menin on 24/05/17.

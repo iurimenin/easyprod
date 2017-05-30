@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod.app.view
+package io.github.iurimenin.easyprod.app.farm.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,9 +13,10 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.firebase.ui.auth.AuthUI
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
-import io.github.iurimenin.easyprod.app.model.FarmModel
-import io.github.iurimenin.easyprod.app.presenter.FarmPresenter
+import io.github.iurimenin.easyprod.app.farm.model.FarmModel
+import io.github.iurimenin.easyprod.app.farm.presenter.FarmPresenter
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
+import io.github.iurimenin.easyprod.app.view.LoginActivity
 import kotlinx.android.synthetic.main.activity_farms.*
 
 /**

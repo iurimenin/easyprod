@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod.app.model
+package io.github.iurimenin.easyprod.app.farm.model
 
 import android.os.Parcel
 import android.os.Parcelable

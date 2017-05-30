@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod.app.presenter
+package io.github.iurimenin.easyprod.app.farm.presenter
 
 import android.content.Context
 import android.content.Intent
@@ -9,12 +9,12 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import io.github.iurimenin.easyprod.R
-import io.github.iurimenin.easyprod.app.model.FarmModel
+import io.github.iurimenin.easyprod.app.farm.model.FarmModel
+import io.github.iurimenin.easyprod.app.farm.view.FarmActivity
+import io.github.iurimenin.easyprod.app.farm.view.FarmAdapter
+import io.github.iurimenin.easyprod.app.field.view.FieldActivity
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.FirebaseUtils
-import io.github.iurimenin.easyprod.app.view.FarmActivity
-import io.github.iurimenin.easyprod.app.view.FarmAdapter
-import io.github.iurimenin.easyprod.app.view.FieldActivity
 
 /**
  * Created by Iuri Menin on 23/05/17.

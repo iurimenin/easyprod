@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod.app.view
+package io.github.iurimenin.easyprod.app.farm.view
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.iurimenin.easyprod.R
-import io.github.iurimenin.easyprod.app.model.FarmModel
+import io.github.iurimenin.easyprod.app.farm.model.FarmModel
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import kotlinx.android.synthetic.main.item_farm.view.*
 
 /**
- * Created by Iuri Menin on 23/05/17.
+ * Created by Iuri Menin on 30/05/17.
  */
 class FarmAdapter(val mCallback : CallbackInterface,
                   val mFarms: ArrayList<FarmModel>,
@@ -21,12 +21,12 @@ class FarmAdapter(val mCallback : CallbackInterface,
 
     val selectedItens = ArrayList<FarmModel>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FarmAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_farm, parent, false)
-        return ViewHolder(view, clickListener)
+        return FarmAdapter.ViewHolder(view, clickListener)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FarmAdapter.ViewHolder, position: Int) {
         holder.bindFarm(mFarms[position], selectedItens, holder.itemView.context, mCallback)
     }
 
@@ -49,7 +49,6 @@ class FarmAdapter(val mCallback : CallbackInterface,
                 itemView.constraintLayoutItemFarm.setOnLongClickListener {
                     selectDeselectItem(itemView, farm, selectedItens, context, callback); true
                 }
-
                 itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons))
             }
         }

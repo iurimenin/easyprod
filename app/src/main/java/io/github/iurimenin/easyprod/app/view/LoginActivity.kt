@@ -10,6 +10,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.firebase.ui.auth.ResultCodes
 import com.google.firebase.auth.FirebaseAuth
 import io.github.iurimenin.easyprod.R
+import io.github.iurimenin.easyprod.app.farm.view.FarmActivity
 import java.util.*
 
 

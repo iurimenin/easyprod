@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod.app.presenter
+package io.github.iurimenin.easyprod.app.field.presenter
 
 import android.content.Context
 import android.widget.TextView
@@ -9,12 +9,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
-import io.github.iurimenin.easyprod.app.model.FieldModel
+import io.github.iurimenin.easyprod.app.field.view.FieldActivity
+import io.github.iurimenin.easyprod.app.field.view.FieldAdapter
+import io.github.iurimenin.easyprod.app.field.model.FieldModel
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.FirebaseUtils
 import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
-import io.github.iurimenin.easyprod.app.view.FieldActivity
-import io.github.iurimenin.easyprod.app.view.FieldAdapter
 
 /**
  * Created by Iuri Menin on 25/05/17.
@@ -26,7 +26,7 @@ class FieldPresenter(var mFarmKey : String?) {
     private var mContext: Context? = null
     private val mFieldRef = FirebaseUtils().getFieldReference(mFarmKey!!)
 
-    fun  bindView(fieldActivity: FieldActivity, adapter :FieldAdapter) {
+    fun  bindView(fieldActivity: FieldActivity, adapter : FieldAdapter) {
         this.mAdapter = adapter
         this.mContext = fieldActivity
         this.mCallback = fieldActivity
