@@ -4,7 +4,7 @@
 
 general:
     artifacts:
-        - /home/ubuntu/nanodegree_sunshine/app/build/outputs/apk/
+        - /home/ubuntu/easyprod/app/build/outputs/apk/
 
 machine:
     environment:
