@@ -76,28 +76,15 @@ class FieldPresenter(var mFarmKey : String?) {
 
         if (isPositive) {
 
-            val textViewFieldKey: TextView =
-                    materialDialog.findViewById(R.id.textViewFieldKey) as TextView
+            if (materialDialog.isValid()) {
 
-            val materialEditTextFieldName: MaterialEditText =
-                    materialDialog.findViewById(R.id.materialEditTextFieldName) as MaterialEditText
+                val textViewFieldKey: TextView =
+                        materialDialog.findViewById(R.id.textViewFieldKey) as TextView
 
-            val materialEditTextFieldArea: MoneyMaskMaterialEditText =
-                    materialDialog.findViewById(R.id.materialEditTextFieldArea)
-                            as MoneyMaskMaterialEditText
+                val field = FieldModel(textViewFieldKey.text.toString(),
+                        (materialDialog.findViewById(R.id.materialEditTextFieldName) as TextView).text.toString(),
+                        (materialDialog.findViewById(R.id.materialEditTextFieldArea) as MoneyMaskMaterialEditText).double)
 
-            val fieldName = materialEditTextFieldName.text.toString()
-            val fieldArea = materialEditTextFieldArea.text.toString()
-            if (fieldName.isNullOrEmpty())
-                materialEditTextFieldName.error =
-                        this.mContext?.getString(R.string.error_field_required)
-            else if (fieldArea.isNullOrEmpty() || materialEditTextFieldArea.double == 0.0)
-                materialEditTextFieldArea.error =
-                        this.mContext?.getString(R.string.error_field_required_and_bigger_than_0)
-            else {
-
-                val field = FieldModel(textViewFieldKey.text.toString(), fieldName,
-                        materialEditTextFieldArea.double)
                 field.save(mFarmKey!!)
                 materialDialog.dismiss()
                 mAdapter?.removeSelecionts()
@@ -111,4 +98,30 @@ class FieldPresenter(var mFarmKey : String?) {
         for (item in selectedItens)
             mFieldRef.child(item.key).removeValue()
     }
+}
+
+private fun  MaterialDialog.isValid(): Boolean {
+
+    val materialEditTextFieldName: MaterialEditText =
+            this.findViewById(R.id.materialEditTextFieldName) as MaterialEditText
+
+    val materialEditTextFieldArea: MoneyMaskMaterialEditText =
+            this.findViewById(R.id.materialEditTextFieldArea) as MoneyMaskMaterialEditText
+
+    var valid = true;
+
+    if (materialEditTextFieldName.text.toString().isNullOrEmpty()) {
+        materialEditTextFieldName.error =
+                this.context?.getString(R.string.error_field_required)
+        valid = false
+    }
+
+    if (materialEditTextFieldArea.text.toString().isNullOrEmpty() ||
+            materialEditTextFieldArea.double == 0.0) {
+        materialEditTextFieldArea.error =
+                this.context?.getString(R.string.error_field_required_and_bigger_than_0)
+        valid = false
+    }
+
+    return valid
 }
