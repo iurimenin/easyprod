@@ -27,7 +27,7 @@ class FieldAdapter(val mCallback : CallbackInterface,
     }
 
     override fun onBindViewHolder(holder: FieldAdapter.ViewHolder, position: Int) {
-        holder.bindFarm(mFields[position], selectedItens, holder.itemView.context, mCallback)
+        holder.bindField(mFields[position], selectedItens, holder.itemView.context, mCallback)
     }
 
     override fun getItemCount() = mFields.size
@@ -36,8 +36,8 @@ class FieldAdapter(val mCallback : CallbackInterface,
                      val clickListener: (FieldModel) -> Unit) :
             RecyclerView.ViewHolder(view) {
 
-        fun bindFarm(field: FieldModel, selectedItens: ArrayList<FieldModel>, context: Context,
-                     callback: CallbackInterface) {
+        fun bindField(field: FieldModel, selectedItens: ArrayList<FieldModel>, context: Context,
+                      callback: CallbackInterface) {
             with(field) {
                 itemView.textViewField.text = name
                 itemView.constraintLayoutItemField.setOnClickListener {

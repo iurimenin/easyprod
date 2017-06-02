@@ -54,6 +54,7 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.malinskiy:superrecyclerview:1.1.4'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'com.google.code.gson:gson:2.8.1'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android-extensions'

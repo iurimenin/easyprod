@@ -6,17 +6,17 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewFieldKey"
+        android:id="@+id/textViewCultivationKey"
         android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/materialEditTextFieldName"
+        android:id="@+id/materialEditTextCultivationName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/field_name"
+        android:hint="@string/cultivation"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,20 +27,28 @@
         app:met_singleLineEllipsis="true"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
-        android:id="@+id/materialEditTextFieldArea"
+    <TextView
+        android:id="@+id/textViewSeasonLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/seasons"
+        android:labelFor="@+id/appCompatSpinnerSeason"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialEditTextCultivationName"/>
+
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/appCompatSpinnerSeason"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/total_area"
-        android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:met_floatingLabel="highlight"
         app:met_singleLineEllipsis="true"
         app:met_baseColor="@color/colorPrimary"
         app:met_primaryColor="@color/colorPrimaryLight"
         app:met_helperTextAlwaysShown="true"
-        app:layout_constraintTop_toBottomOf="@+id/materialEditTextFieldName" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialEditTextCultivationName"
+        app:layout_constraintStart_toEndOf="@+id/textViewSeasonLabel" />
 
 </android.support.constraint.ConstraintLayout>

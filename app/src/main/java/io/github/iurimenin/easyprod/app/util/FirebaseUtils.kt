@@ -13,6 +13,7 @@ class FirebaseUtils {
 
     private val FARM_REFERENCE = "/farms/"
     private val FIELD_REFERENCE = "/fields/"
+    private val SEASON_REFERENCE = "/seasons/"
 
     private var  mUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
 
@@ -45,6 +46,14 @@ class FirebaseUtils {
         sb.append("farmKey(")
         sb.append(farmKey)
         sb.append(")")
+        val reference = mFirebaseDatabase.getReference(sb.toString())
+        reference.keepSynced(true)
+        return reference
+    }
+
+    fun getSeasonReference() : DatabaseReference {
+        val sb = StringBuilder()
+        sb.append(SEASON_REFERENCE)
         val reference = mFirebaseDatabase.getReference(sb.toString())
         reference.keepSynced(true)
         return reference

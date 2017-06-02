@@ -1,4 +1,4 @@
-package io.github.iurimenin.easyprod.app.field.model
+package io.github.iurimenin.easyprod.app.cultivation.model
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -6,27 +6,29 @@ import com.google.firebase.database.Exclude
 import io.github.iurimenin.easyprod.app.util.FirebaseUtils
 
 /**
- * Created by Iuri Menin on 24/05/17.
+ * Created by Iuri Menin on 01/06/17.
  */
-data class FieldModel(var key: String, var name: String, var totalArea : Double) : Parcelable {
+class CultivationModel(var key: String, var name: String,
+                       var seasonKey: String, var seasonName: String) : Parcelable {
 
-    constructor() : this("", "", 0.00) {
+    constructor() : this("", "", "", "") {
         //Firebase needs the constructor without parameters
     }
 
     constructor(source: Parcel) : this(
             source.readString(),
             source.readString(),
-            source.readDouble()
+            source.readString(),
+            source.readString()
     )
 
     companion object {
 
-        val TAG = FieldModel::javaClass.name
+        val TAG = CultivationModel::javaClass.name
 
-        @JvmField val CREATOR: Parcelable.Creator<FieldModel> = object : Parcelable.Creator<FieldModel> {
-            override fun createFromParcel(source: Parcel): FieldModel = FieldModel(source)
-            override fun newArray(size: Int): Array<FieldModel?> = arrayOfNulls(size)
+        @JvmField val CREATOR: Parcelable.Creator<CultivationModel> = object : Parcelable.Creator<CultivationModel> {
+            override fun createFromParcel(source: Parcel): CultivationModel = CultivationModel(source)
+            override fun newArray(size: Int): Array<CultivationModel?> = arrayOfNulls(size)
         }
     }
 
@@ -35,14 +37,15 @@ data class FieldModel(var key: String, var name: String, var totalArea : Double)
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeString(this.key)
         dest.writeString(this.name)
-        dest.writeDouble(this.totalArea)
+        dest.writeString(this.seasonKey)
+        dest.writeString(this.seasonName)
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other?.javaClass != javaClass) return false
 
-        other as FieldModel
+        other as CultivationModel
 
         if (key != other.key) return false
 

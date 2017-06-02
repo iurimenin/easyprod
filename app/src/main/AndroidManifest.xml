@@ -29,7 +29,10 @@
             android:value="@string/facebook_app_id"
             tools:replace="android:value" />
 
-        <activity android:name=".app.field.view.FieldActivity"/>
+        <activity android:name=".app.field.view.FieldActivity" />
+        <activity android:name=".app.production.view.ProductionActivity" />
+        <activity android:name=".app.cultivation.view.CultivationActivity" />
+        <activity android:name=".app.view.AboutActivity"/>
     </application>
 
 </manifest>

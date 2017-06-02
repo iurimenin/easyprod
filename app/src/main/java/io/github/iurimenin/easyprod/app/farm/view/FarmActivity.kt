@@ -38,6 +38,10 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_farms)
 
+        supportActionBar.apply {
+            title = getString(R.string.farms)
+        }
+
         floatingActionButtonAddFarm.setOnClickListener({ addFarm() })
 
         superRecyclerViewFarms.setLayoutManager(LinearLayoutManager(this))
@@ -71,6 +75,8 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         when (item?.itemId) {
+            R.id.menuMainItemAbout  -> mPresenter?.showAbout()
+
             R.id.menuMainItemLogout -> this.logout()
 
             R.id.menuMainItemEdit -> this.updateFarm()
@@ -124,12 +130,12 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
     }
 
     private fun updateFarm() {
-        //We can select index 0 because the edit item will only be visible
+        // We can select index 0 because the edit item will only be visible
         // when only 1 item is selected
         val farm = mAdapter.selectedItens[0]
 
         val builder = MaterialDialog.Builder(this)
-                .title(R.string.new_farm)
+                .title(R.string.farm)
                 .titleColorRes(R.color.colorPrimary)
                 .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
                 .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))

@@ -1,64 +1,66 @@
-package io.github.iurimenin.easyprod.app.field.view
+package io.github.iurimenin.easyprod.app.cultivation.view
 
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.AppCompatSpinner
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
-import io.github.iurimenin.easyprod.app.farm.model.FarmModel
+import io.github.iurimenin.easyprod.app.cultivation.model.CultivationModel
+import io.github.iurimenin.easyprod.app.cultivation.presenter.CultivationPresenter
 import io.github.iurimenin.easyprod.app.field.model.FieldModel
-import io.github.iurimenin.easyprod.app.field.presenter.FieldPresenter
+import io.github.iurimenin.easyprod.app.season.model.SeasonModel
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
-import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
-import kotlinx.android.synthetic.main.activity_fields.*
+import kotlinx.android.synthetic.main.activity_cultivation.*
 
-class FieldActivity : AppCompatActivity(), CallbackInterface {
+class CultivationActivity : AppCompatActivity(), CallbackInterface {
 
-    private var mPresenter: FieldPresenter? = null
+    private var mPresenter: CultivationPresenter? = null
     private var mMenuItemDelete: MenuItem? = null
     private var mMenuItemEdit: MenuItem? = null
-    private var mFarm: FarmModel? = null
+    private var mField: FieldModel? = null
 
-    private val mAdapter: FieldAdapter = FieldAdapter(this, ArrayList<FieldModel>()) {
+    private val mAdapter: CultivationAdapter = CultivationAdapter(this, ArrayList<CultivationModel>()) {
         mPresenter?.clickItem(it)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fields)
+        setContentView(R.layout.activity_cultivation)
 
         val arrowBack = ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp)
         arrowBack.setColorFilter(ContextCompat.getColor(this, android.R.color.white),
                 PorterDuff.Mode.SRC_ATOP)
 
         supportActionBar?.apply {
-            title = getString(R.string.fiels)
+            title = getString(R.string.cultivations)
             setDisplayShowTitleEnabled(true)
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(arrowBack)
         }
 
-        mFarm = intent.extras[FarmModel.TAG] as FarmModel
+        mField = intent.extras[FieldModel.TAG] as FieldModel
 
-        textViewFarm.text = mFarm?.name
+        textViewFieldName.text = mField?.name
 
-        floatingActionButtonAddField.setOnClickListener { addFiled() }
+        floatingActionButtonAddCultivation.setOnClickListener { addFiled() }
 
-        superRecyclerViewFields.setLayoutManager(LinearLayoutManager(this))
-        superRecyclerViewFields.adapter = mAdapter
+        superRecyclerViewCultivations.setLayoutManager(LinearLayoutManager(this))
+        superRecyclerViewCultivations.adapter = mAdapter
 
         if (mPresenter == null)
-            mPresenter = FieldPresenter(mFarm?.key)
+            mPresenter = CultivationPresenter(mField?.key)
 
         mPresenter?.bindView(this, mAdapter)
-        mPresenter?.loadFields()
+        mPresenter?.loadCultivations()
         updateMenuIcons()
     }
 
@@ -69,10 +71,10 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_field, menu)
+        menuInflater.inflate(R.menu.menu_cultivation, menu)
 
-        mMenuItemDelete = menu.findItem(R.id.menuFieldItemDelete)
-        mMenuItemEdit = menu.findItem(R.id.menuFieldItemEdit)
+        mMenuItemDelete = menu.findItem(R.id.menuCultivationItemDelete)
+        mMenuItemEdit = menu.findItem(R.id.menuCultivationItemEdit)
 
         return true
     }
@@ -83,9 +85,9 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
 
             android.R.id.home -> onBackPressed()
 
-            R.id.menuFieldItemEdit -> updateField()
+            R.id.menuCultivationItemEdit -> updateCultivation()
 
-            R.id.menuFieldItemDelete -> mPresenter?.deleteSelectedItems(mAdapter.selectedItens)
+            R.id.menuCultivationItemDelete -> mPresenter?.deleteSelectedItems(mAdapter.selectedItens)
         }
         return true
     }
@@ -112,49 +114,60 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
     }
 
     private fun addFiled() {
-        MaterialDialog.Builder(this)
-                .title(R.string.new_field)
+        val builder = MaterialDialog.Builder(this)
+                .title(R.string.new_cultivation)
                 .titleColorRes(R.color.colorPrimary)
                 .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
                 .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
                 .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .customView(R.layout.new_field_view, true)
+                .customView(R.layout.new_cultivation_view, true)
                 .positiveText(R.string.text_save)
                 .negativeText(R.string.text_cancel)
                 .autoDismiss(false)
                 .onAny { materialDialog, dialogAction ->
-                    mPresenter?.saveField(materialDialog, dialogAction == DialogAction.POSITIVE) }
-                .show()
+                    mPresenter?.saveCultivation(materialDialog, dialogAction == DialogAction.POSITIVE) }
+
+        val appCompatSpinnerSeason =
+                builder.build().findViewById(R.id.appCompatSpinnerSeason) as AppCompatSpinner
+
+        appCompatSpinnerSeason.adapter = ArrayAdapter(this, R.layout.spinner_season, mPresenter?.mSeasons)
+
+        builder.show()
     }
 
-    private fun updateField() {
+    private fun updateCultivation() {
         //We can select index 0 because the edit item will only be visible
         // when only 1 item is selected
-        val field = mAdapter.selectedItens[0]
+        val cultivation = mAdapter.selectedItens[0]
 
         val builder = MaterialDialog.Builder(this)
-                .title(R.string.field)
+                .title(R.string.cultivation)
                 .titleColorRes(R.color.colorPrimary)
                 .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
                 .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
                 .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .customView(R.layout.new_field_view, true)
+                .customView(R.layout.new_cultivation_view, true)
                 .positiveText(R.string.text_save)
                 .negativeText(R.string.text_cancel)
                 .autoDismiss(false)
                 .onAny { materialDialog, dialogAction ->
-                    mPresenter?.saveField(materialDialog, dialogAction == DialogAction.POSITIVE) }
+                    mPresenter?.saveCultivation(materialDialog, dialogAction == DialogAction.POSITIVE) }
 
-        val textViewFieldKey = builder.build().findViewById(R.id.textViewFieldKey) as TextView
-        textViewFieldKey.text = field.key
-        val materialEditTextFieldName =
-                builder.build().findViewById(R.id.materialEditTextFieldName) as MaterialEditText
-        materialEditTextFieldName.setText(field.name)
+        val textViewCultivationKey = builder.build().findViewById(R.id.textViewCultivationKey) as TextView
+        textViewCultivationKey.text = cultivation.key
 
-        val materialEditTextFieldArea: MoneyMaskMaterialEditText =
-                builder.build().findViewById(R.id.materialEditTextFieldArea) as MoneyMaskMaterialEditText
-        materialEditTextFieldArea.setTextFromDouble(field.totalArea)
+        val materialEditTextCultivationName =
+                builder.build().findViewById(R.id.materialEditTextCultivationName) as MaterialEditText
+        materialEditTextCultivationName.setText(cultivation.name)
 
+        val appCompatSpinnerSeason =
+                builder.build().findViewById(R.id.appCompatSpinnerSeason) as AppCompatSpinner
+
+        val seasonAdapter : ArrayAdapter<SeasonModel> = ArrayAdapter(this, R.layout.spinner_season, mPresenter?.mSeasons)
+        appCompatSpinnerSeason.adapter = seasonAdapter
+
+        appCompatSpinnerSeason.setSelection(seasonAdapter.getPosition(
+                mPresenter?.mSeasons?.find { it.key == cultivation.seasonKey }))
         builder.show()
     }
 }

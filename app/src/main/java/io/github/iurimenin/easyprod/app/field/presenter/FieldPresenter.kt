@@ -1,17 +1,18 @@
 package io.github.iurimenin.easyprod.app.field.presenter
 
 import android.content.Context
+import android.content.Intent
 import android.widget.TextView
-import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
+import io.github.iurimenin.easyprod.app.cultivation.view.CultivationActivity
+import io.github.iurimenin.easyprod.app.field.model.FieldModel
 import io.github.iurimenin.easyprod.app.field.view.FieldActivity
 import io.github.iurimenin.easyprod.app.field.view.FieldAdapter
-import io.github.iurimenin.easyprod.app.field.model.FieldModel
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.FirebaseUtils
 import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
@@ -37,8 +38,10 @@ class FieldPresenter(var mFarmKey : String?) {
         this.mCallback = null
     }
 
-    fun  clickItem(it: FieldModel) {
-        Toast.makeText(mContext!!, "Vai abrir a tela de produções", Toast.LENGTH_SHORT).show()
+    fun  clickItem(fieldModel: FieldModel) {
+        val i = Intent(this.mContext, CultivationActivity::class.java)
+        i.putExtra(FieldModel.TAG, fieldModel)
+        this.mContext?.startActivity(i)
     }
 
     fun loadFields() {

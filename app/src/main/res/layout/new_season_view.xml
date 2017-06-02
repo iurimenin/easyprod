@@ -2,22 +2,24 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewFieldKey"
+        android:id="@+id/textViewSeasonKey"
         android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/materialEditTextFieldName"
+        android:id="@+id/materialEditTextSeasonStart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/field_name"
-        android:inputType="text"
+        android:hint="@string/season_start"
+        android:inputType="number"
+        android:maxLength="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:met_baseColor="@color/colorPrimary"
@@ -27,13 +29,14 @@
         app:met_singleLineEllipsis="true"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
-        android:id="@+id/materialEditTextFieldArea"
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/materialEditTextSeasonEnd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/total_area"
-        android:inputType="numberDecimal"
+        android:hint="@string/season_end"
+        android:inputType="number"
+        android:maxLength="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:met_floatingLabel="highlight"
@@ -41,6 +44,7 @@
         app:met_baseColor="@color/colorPrimary"
         app:met_primaryColor="@color/colorPrimaryLight"
         app:met_helperTextAlwaysShown="true"
-        app:layout_constraintTop_toBottomOf="@+id/materialEditTextFieldName" />
+        app:layout_constraintTop_toBottomOf="@+id/materialEditTextSeasonStart"
+        tools:layout_editor_absoluteY="439dp"/>
 
 </android.support.constraint.ConstraintLayout>
