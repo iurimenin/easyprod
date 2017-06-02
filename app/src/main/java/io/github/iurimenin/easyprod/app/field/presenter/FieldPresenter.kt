@@ -78,10 +78,8 @@ class FieldPresenter(var mFarmKey : String?) {
 
             if (materialDialog.isValid()) {
 
-                val textViewFieldKey: TextView =
-                        materialDialog.findViewById(R.id.textViewFieldKey) as TextView
-
-                val field = FieldModel(textViewFieldKey.text.toString(),
+                val field = FieldModel(
+                        (materialDialog.findViewById(R.id.textViewFieldKey) as TextView).text.toString(),
                         (materialDialog.findViewById(R.id.materialEditTextFieldName) as TextView).text.toString(),
                         (materialDialog.findViewById(R.id.materialEditTextFieldArea) as MoneyMaskMaterialEditText).double)
 
