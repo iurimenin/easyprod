@@ -9,22 +9,23 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.afollestad.materialdialogs.DialogAction
-import com.afollestad.materialdialogs.MaterialDialog
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.farm.model.FarmModel
 import io.github.iurimenin.easyprod.app.field.model.FieldModel
 import io.github.iurimenin.easyprod.app.field.presenter.FieldPresenter
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
+import io.github.iurimenin.easyprod.app.util.MaterialDialogUtils
 import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
 import kotlinx.android.synthetic.main.activity_fields.*
 
 class FieldActivity : AppCompatActivity(), CallbackInterface {
 
-    private var mPresenter: FieldPresenter? = null
-    private var mMenuItemDelete: MenuItem? = null
-    private var mMenuItemEdit: MenuItem? = null
     private var mFarm: FarmModel? = null
+    private var mMenuItemEdit: MenuItem? = null
+    private var mMenuItemDelete: MenuItem? = null
+    private var mPresenter: FieldPresenter? = null
+    private var mMaterialDialogUtils : MaterialDialogUtils? = null
 
     private val mAdapter: FieldAdapter = FieldAdapter(this, ArrayList<FieldModel>()) {
         mPresenter?.clickItem(it)
@@ -56,6 +57,9 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
 
         if (mPresenter == null)
             mPresenter = FieldPresenter(mFarm?.key)
+
+        if (mMaterialDialogUtils == null)
+            mMaterialDialogUtils = MaterialDialogUtils(this)
 
         mPresenter?.bindView(this, mAdapter)
         mPresenter?.loadFields()
@@ -112,41 +116,23 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
     }
 
     private fun addFiled() {
-        MaterialDialog.Builder(this)
-                .title(R.string.new_field)
-                .titleColorRes(R.color.colorPrimary)
-                .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
-                .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
-                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .customView(R.layout.new_field_view, true)
-                .positiveText(R.string.text_save)
-                .negativeText(R.string.text_cancel)
-                .autoDismiss(false)
-                .onAny { materialDialog, dialogAction ->
+        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_field_view, R.string.new_field)
+        builder?.onAny { materialDialog, dialogAction ->
                     mPresenter?.saveField(materialDialog, dialogAction == DialogAction.POSITIVE) }
-                .show()
+        builder?.show()
     }
 
     private fun updateField() {
         //We can select index 0 because the edit item will only be visible
         // when only 1 item is selected
         val field = mAdapter.selectedItens[0]
-
-        val builder = MaterialDialog.Builder(this)
-                .title(R.string.field)
-                .titleColorRes(R.color.colorPrimary)
-                .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
-                .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
-                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .customView(R.layout.new_field_view, true)
-                .positiveText(R.string.text_save)
-                .negativeText(R.string.text_cancel)
-                .autoDismiss(false)
-                .onAny { materialDialog, dialogAction ->
+        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_field_view, R.string.field)
+        builder?.onAny { materialDialog, dialogAction ->
                     mPresenter?.saveField(materialDialog, dialogAction == DialogAction.POSITIVE) }
 
-        val textViewFieldKey = builder.build().findViewById(R.id.textViewFieldKey) as TextView
+        val textViewFieldKey = builder?.build()?.findViewById(R.id.textViewFieldKey) as TextView
         textViewFieldKey.text = field.key
+
         val materialEditTextFieldName =
                 builder.build().findViewById(R.id.materialEditTextFieldName) as MaterialEditText
         materialEditTextFieldName.setText(field.name)

@@ -23,10 +23,10 @@ import kotlinx.android.synthetic.main.activity_cultivation.*
 
 class CultivationActivity : AppCompatActivity(), CallbackInterface {
 
-    private var mPresenter: CultivationPresenter? = null
-    private var mMenuItemDelete: MenuItem? = null
-    private var mMenuItemEdit: MenuItem? = null
     private var mField: FieldModel? = null
+    private var mMenuItemEdit: MenuItem? = null
+    private var mMenuItemDelete: MenuItem? = null
+    private var mPresenter: CultivationPresenter? = null
     private var mMaterialDialogUtils : MaterialDialogUtils? = null
 
     private val mAdapter: CultivationAdapter = CultivationAdapter(this, ArrayList<CultivationModel>()) {
@@ -60,7 +60,8 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
         if (mPresenter == null)
             mPresenter = CultivationPresenter(mField?.key)
 
-        mMaterialDialogUtils = MaterialDialogUtils(this)
+        if (mMaterialDialogUtils == null)
+            mMaterialDialogUtils = MaterialDialogUtils(this)
 
         mPresenter?.bindView(this, mAdapter)
         mPresenter?.loadCultivations()

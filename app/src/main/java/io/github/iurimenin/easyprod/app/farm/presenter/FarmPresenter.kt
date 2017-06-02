@@ -8,14 +8,13 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.farm.model.FarmModel
 import io.github.iurimenin.easyprod.app.farm.view.FarmActivity
 import io.github.iurimenin.easyprod.app.farm.view.FarmAdapter
 import io.github.iurimenin.easyprod.app.field.view.FieldActivity
 import io.github.iurimenin.easyprod.app.season.model.SeasonModel
+import io.github.iurimenin.easyprod.app.season.utils.SeasonUtils
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.FirebaseUtils
 import io.github.iurimenin.easyprod.app.view.AboutActivity
@@ -42,48 +41,26 @@ class FarmPresenter {
     private fun  syncSeasons(context : Context) {
 
         // Sync all seasons to use
-        val gson = Gson()
+        val seasonUtils = SeasonUtils(context)
         val listSeason = ArrayList<SeasonModel>()
         val seasonReference = FirebaseUtils().getSeasonReference()
-        val type = object : TypeToken<ArrayList<SeasonModel>>() {}.type
-        val sharedPref = context.getSharedPreferences("EASYPROD", Context.MODE_PRIVATE)
 
         seasonReference.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val vo = dataSnapshot.getValue(SeasonModel::class.java)
 
-                val jsonStored = sharedPref.getString(SeasonModel.TAG, "")
-
-                if (!jsonStored.isNullOrEmpty()) {
-
-                    val listStored : ArrayList<SeasonModel> = gson.fromJson(jsonStored, type)
-
-                    listStored
-                            .filterNot { it -> listSeason.contains(it) }
-                            .forEach { it -> listSeason.add(it) }
-                }
+                seasonUtils.addStoredSeasonsToList(listSeason)
 
                 if (!listSeason.contains(vo))
                     listSeason.add(vo)
 
-                val editor = sharedPref.edit()
-                editor.putString(SeasonModel.TAG, gson.toJson(listSeason))
-                editor.apply()
+                seasonUtils.save(listSeason)
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
                 val updated = dataSnapshot.getValue(SeasonModel::class.java)
 
-                val jsonStored = sharedPref.getString(SeasonModel.TAG, "")
-
-                if (!jsonStored.isNullOrEmpty()) {
-
-                    val listStored : ArrayList<SeasonModel> = gson.fromJson(jsonStored, type)
-
-                    listStored
-                            .filterNot { it -> listSeason.contains(it) }
-                            .forEach { it -> listSeason.add(it) }
-                }
+                seasonUtils.addStoredSeasonsToList(listSeason)
 
                 listSeason
                         .filter { it.key == updated.key }
@@ -92,30 +69,17 @@ class FarmPresenter {
                             it.endYear = updated.endYear
                         }
 
-                val editor = sharedPref.edit()
-                editor.putString(SeasonModel.TAG, gson.toJson(listSeason))
-                editor.apply()
+                seasonUtils.save(listSeason)
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
                 val vo = dataSnapshot.getValue(SeasonModel::class.java)
 
-                val jsonStored = sharedPref.getString(SeasonModel.TAG, "")
-
-                if (!jsonStored.isNullOrEmpty()) {
-
-                    val listStored : ArrayList<SeasonModel> = gson.fromJson(jsonStored, type)
-
-                    listStored
-                            .filterNot { it -> listSeason.contains(it) }
-                            .forEach { it -> listSeason.add(it) }
-                }
+                seasonUtils.addStoredSeasonsToList(listSeason)
 
                 listSeason.remove(vo)
 
-                val editor = sharedPref.edit()
-                editor.putString(SeasonModel.TAG, gson.toJson(listSeason))
-                editor.apply()
+                seasonUtils.save(listSeason)
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
@@ -179,18 +143,10 @@ class FarmPresenter {
 
         if (isPositive) {
 
-            val editTextFarmName: EditText =
-                    materialDialog.findViewById(R.id.materialEditTextFarmName) as EditText
-
-            val textViewFarmKey: TextView =
-                    materialDialog.findViewById(R.id.textViewFarmKey) as TextView
-
-            val farmName = editTextFarmName.text.toString()
-            if (farmName.isNullOrEmpty())
-                editTextFarmName.error = this.mContext?.getString(R.string.error_field_required)
-            else {
-
-                val farm = FarmModel(textViewFarmKey.text.toString(), farmName)
+            if (materialDialog.isValid()) {
+                val farm = FarmModel(
+                        (materialDialog.findViewById(R.id.textViewFarmKey) as TextView).text.toString(),
+                        (materialDialog.findViewById(R.id.materialEditTextFarmName) as EditText).text.toString())
                 farm.save()
                 materialDialog.dismiss()
                 mAdapter?.removeSelecionts()
@@ -199,4 +155,17 @@ class FarmPresenter {
             materialDialog.dismiss()
         }
     }
+}
+
+private fun  MaterialDialog.isValid(): Boolean {
+
+    val editTextFarmName: EditText =
+            this.findViewById(R.id.materialEditTextFarmName) as EditText
+
+    if (editTextFarmName.text.toString().isNullOrEmpty()) {
+        editTextFarmName.error = context.getString(R.string.error_field_required)
+        return false
+    }
+
+    return true
 }

@@ -2,20 +2,19 @@ package io.github.iurimenin.easyprod.app.farm.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.afollestad.materialdialogs.DialogAction
-import com.afollestad.materialdialogs.MaterialDialog
 import com.firebase.ui.auth.AuthUI
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.farm.model.FarmModel
 import io.github.iurimenin.easyprod.app.farm.presenter.FarmPresenter
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
+import io.github.iurimenin.easyprod.app.util.MaterialDialogUtils
 import io.github.iurimenin.easyprod.app.view.LoginActivity
 import kotlinx.android.synthetic.main.activity_farms.*
 
@@ -24,11 +23,12 @@ import kotlinx.android.synthetic.main.activity_farms.*
  */
 class FarmActivity : AppCompatActivity(), CallbackInterface {
 
-    private var mPresenter: FarmPresenter? = null
+    private var mMenuItemEdit: MenuItem? = null
     private var mMenuItemAbout: MenuItem? = null
     private var mMenuItemLogout: MenuItem? = null
     private var mMenuItemDelete: MenuItem? = null
-    private var mMenuItemEdit: MenuItem? = null
+    private var mPresenter: FarmPresenter? = null
+    private var mMaterialDialogUtils : MaterialDialogUtils? = null
 
     private val mAdapter: FarmAdapter = FarmAdapter(this, ArrayList<FarmModel>()) {
         mPresenter?.clickItem(it)
@@ -49,6 +49,9 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
 
         if (mPresenter == null)
             mPresenter = FarmPresenter()
+
+        if (mMaterialDialogUtils == null)
+            mMaterialDialogUtils = MaterialDialogUtils(this)
 
         mPresenter?.bindView(this, mAdapter)
         mPresenter?.loadFarms()
@@ -114,41 +117,24 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
     }
 
     private fun addFarm() {
-        MaterialDialog.Builder(this)
-                .title(R.string.new_farm)
-                .titleColorRes(R.color.colorPrimary)
-                .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
-                .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
-                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .customView(R.layout.new_farm_view, true)
-                .positiveText(R.string.text_save)
-                .negativeText(R.string.text_cancel)
-                .autoDismiss(false)
-                .onAny { materialDialog, dialogAction ->
+
+        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_farm_view, R.string.new_farm)
+        builder?.onAny { materialDialog, dialogAction ->
                     mPresenter?.saveFarm(materialDialog, dialogAction == DialogAction.POSITIVE) }
-                .show()
+                ?.show()
     }
 
     private fun updateFarm() {
         // We can select index 0 because the edit item will only be visible
         // when only 1 item is selected
         val farm = mAdapter.selectedItens[0]
-
-        val builder = MaterialDialog.Builder(this)
-                .title(R.string.farm)
-                .titleColorRes(R.color.colorPrimary)
-                .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
-                .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
-                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .customView(R.layout.new_farm_view, true)
-                .positiveText(R.string.text_save)
-                .negativeText(R.string.text_cancel)
-                .autoDismiss(false)
-                .onAny { materialDialog, dialogAction ->
+        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_farm_view, R.string.farm)
+        builder?.onAny { materialDialog, dialogAction ->
                     mPresenter?.saveFarm(materialDialog, dialogAction == DialogAction.POSITIVE) }
 
-        val textViewFarmKey = builder.build().findViewById(R.id.textViewFarmKey) as TextView
+        val textViewFarmKey = builder?.build()?.findViewById(R.id.textViewFarmKey) as TextView
         textViewFarmKey.text = farm.key
+
         val materialEditTextFarmName =
                 builder.build().findViewById(R.id.materialEditTextFarmName) as MaterialEditText
         materialEditTextFarmName.setText(farm.name)
