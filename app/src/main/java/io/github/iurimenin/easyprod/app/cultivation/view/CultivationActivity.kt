@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.afollestad.materialdialogs.DialogAction
-import com.afollestad.materialdialogs.MaterialDialog
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.cultivation.model.CultivationModel
@@ -19,6 +18,7 @@ import io.github.iurimenin.easyprod.app.cultivation.presenter.CultivationPresent
 import io.github.iurimenin.easyprod.app.field.model.FieldModel
 import io.github.iurimenin.easyprod.app.season.model.SeasonModel
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
+import io.github.iurimenin.easyprod.app.util.MaterialDialogUtils
 import kotlinx.android.synthetic.main.activity_cultivation.*
 
 class CultivationActivity : AppCompatActivity(), CallbackInterface {
@@ -27,6 +27,7 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
     private var mMenuItemDelete: MenuItem? = null
     private var mMenuItemEdit: MenuItem? = null
     private var mField: FieldModel? = null
+    private var mMaterialDialogUtils : MaterialDialogUtils? = null
 
     private val mAdapter: CultivationAdapter = CultivationAdapter(this, ArrayList<CultivationModel>()) {
         mPresenter?.clickItem(it)
@@ -58,6 +59,8 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
 
         if (mPresenter == null)
             mPresenter = CultivationPresenter(mField?.key)
+
+        mMaterialDialogUtils = MaterialDialogUtils(this)
 
         mPresenter?.bindView(this, mAdapter)
         mPresenter?.loadCultivations()
@@ -114,21 +117,13 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
     }
 
     private fun addFiled() {
-        val builder = MaterialDialog.Builder(this)
-                .title(R.string.new_cultivation)
-                .titleColorRes(R.color.colorPrimary)
-                .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
-                .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
-                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .customView(R.layout.new_cultivation_view, true)
-                .positiveText(R.string.text_save)
-                .negativeText(R.string.text_cancel)
-                .autoDismiss(false)
-                .onAny { materialDialog, dialogAction ->
+        val builder  = mMaterialDialogUtils?.getDialog(R.layout.new_cultivation_view, R.string.new_cultivation)
+
+        builder?.onAny { materialDialog, dialogAction ->
                     mPresenter?.saveCultivation(materialDialog, dialogAction == DialogAction.POSITIVE) }
 
         val appCompatSpinnerSeason =
-                builder.build().findViewById(R.id.appCompatSpinnerSeason) as AppCompatSpinner
+                builder?.build()?.findViewById(R.id.appCompatSpinnerSeason) as AppCompatSpinner
 
         appCompatSpinnerSeason.adapter = ArrayAdapter(this, R.layout.spinner_season, mPresenter?.mSeasons)
 
@@ -140,20 +135,12 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
         // when only 1 item is selected
         val cultivation = mAdapter.selectedItens[0]
 
-        val builder = MaterialDialog.Builder(this)
-                .title(R.string.cultivation)
-                .titleColorRes(R.color.colorPrimary)
-                .contentColor(ContextCompat.getColor(this, R.color.colorPrimaryText))
-                .negativeColor(ContextCompat.getColor(this, android.R.color.holo_red_light))
-                .positiveColor(ContextCompat.getColor(this, R.color.colorPrimary))
-                .customView(R.layout.new_cultivation_view, true)
-                .positiveText(R.string.text_save)
-                .negativeText(R.string.text_cancel)
-                .autoDismiss(false)
-                .onAny { materialDialog, dialogAction ->
+        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_cultivation_view, R.string.cultivation)
+
+        builder?.onAny { materialDialog, dialogAction ->
                     mPresenter?.saveCultivation(materialDialog, dialogAction == DialogAction.POSITIVE) }
 
-        val textViewCultivationKey = builder.build().findViewById(R.id.textViewCultivationKey) as TextView
+        val textViewCultivationKey = builder?.build()?.findViewById(R.id.textViewCultivationKey) as TextView
         textViewCultivationKey.text = cultivation.key
 
         val materialEditTextCultivationName =
@@ -163,7 +150,8 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
         val appCompatSpinnerSeason =
                 builder.build().findViewById(R.id.appCompatSpinnerSeason) as AppCompatSpinner
 
-        val seasonAdapter : ArrayAdapter<SeasonModel> = ArrayAdapter(this, R.layout.spinner_season, mPresenter?.mSeasons)
+        val seasonAdapter : ArrayAdapter<SeasonModel> = ArrayAdapter(this, R.layout.spinner_season,
+                mPresenter?.mSeasons)
         appCompatSpinnerSeason.adapter = seasonAdapter
 
         appCompatSpinnerSeason.setSelection(seasonAdapter.getPosition(
