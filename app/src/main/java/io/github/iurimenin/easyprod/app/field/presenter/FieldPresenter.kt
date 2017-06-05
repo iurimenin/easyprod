@@ -94,8 +94,8 @@ class FieldPresenter(var mFarmKey : String?) : PresenterInterface {
     }
 
     fun  deleteSelectedItems(selectedItens: ArrayList<FieldModel>) {
-        for (item in selectedItens)
-            mFieldRef.child(item.key).removeValue()
+        for ((key) in selectedItens)
+            mFieldRef.child(key).removeValue()
     }
 }
 

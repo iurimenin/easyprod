@@ -37,14 +37,14 @@ class AboutActivity : AppCompatActivity() {
         val pInfo: PackageInfo
         try {
             pInfo = this.packageManager.getPackageInfo(this.packageName, 0)
-            textViewVersion.setText(getString(R.string.version, pInfo.versionName))
+            textViewVersion.text = getString(R.string.version, pInfo.versionName)
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
+        when (item.itemId) {
             android.R.id.home -> {
                 this.onBackPressed()
                 return true
