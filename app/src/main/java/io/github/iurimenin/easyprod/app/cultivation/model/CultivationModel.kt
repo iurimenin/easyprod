@@ -24,7 +24,7 @@ class CultivationModel(var key: String, var name: String,
 
     companion object {
 
-        val TAG = CultivationModel::javaClass.name
+        val TAG = "CultivationModel"
 
         @JvmField val CREATOR: Parcelable.Creator<CultivationModel> = object : Parcelable.Creator<CultivationModel> {
             override fun createFromParcel(source: Parcel): CultivationModel = CultivationModel(source)

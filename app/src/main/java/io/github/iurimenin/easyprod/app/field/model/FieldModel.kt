@@ -22,7 +22,7 @@ data class FieldModel(var key: String, var name: String, var totalArea : Double)
 
     companion object {
 
-        val TAG = FieldModel::javaClass.name
+        val TAG = "FieldModel"
 
         @JvmField val CREATOR: Parcelable.Creator<FieldModel> = object : Parcelable.Creator<FieldModel> {
             override fun createFromParcel(source: Parcel): FieldModel = FieldModel(source)

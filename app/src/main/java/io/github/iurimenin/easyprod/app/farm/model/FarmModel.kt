@@ -22,7 +22,7 @@ class FarmModel(var key: String, var name : String) : Parcelable {
 
     companion object {
 
-        val TAG = FarmModel::javaClass.name
+        val TAG = "FarmModel"
 
         @JvmField val CREATOR: Parcelable.Creator<FarmModel> = object : Parcelable.Creator<FarmModel> {
             override fun createFromParcel(source: Parcel): FarmModel = FarmModel(source)

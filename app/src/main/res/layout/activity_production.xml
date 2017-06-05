@@ -6,7 +6,7 @@
     android:id="@+id/constraintLayoutActivityField"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.field.view.FieldActivity">
+    tools:context=".app.production.view.ProductionActivity">
 
     <TextView
         android:id="@+id/textViewFieldName"
@@ -27,8 +27,28 @@
         app:scrollbarStyle="insideInset"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/textViewFieldName" />
+
+    <TextView
+        android:id="@+id/textViewTotalProductionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="41dp"
+        android:text="@string/total_production_dots"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTotalProduction" />
+
+    <TextView
+        android:id="@+id/textViewTotalProduction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:text="@string/total_production"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButtonAddProduction"

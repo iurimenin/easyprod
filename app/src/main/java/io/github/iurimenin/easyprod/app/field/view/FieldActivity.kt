@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import com.afollestad.materialdialogs.DialogAction
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.farm.model.FarmModel
@@ -116,19 +115,14 @@ class FieldActivity : AppCompatActivity(), CallbackInterface {
     }
 
     private fun addFiled() {
-        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_field_view, R.string.new_field)
-        builder?.onAny { materialDialog, dialogAction ->
-                    mPresenter?.saveField(materialDialog, dialogAction == DialogAction.POSITIVE) }
-        builder?.show()
+        mMaterialDialogUtils?.getDialog(R.layout.new_field_view, R.string.new_field, mPresenter)?.show()
     }
 
     private fun updateField() {
         //We can select index 0 because the edit item will only be visible
         // when only 1 item is selected
         val field = mAdapter.selectedItens[0]
-        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_field_view, R.string.field)
-        builder?.onAny { materialDialog, dialogAction ->
-                    mPresenter?.saveField(materialDialog, dialogAction == DialogAction.POSITIVE) }
+        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_field_view, R.string.field, mPresenter)
 
         val textViewFieldKey = builder?.build()?.findViewById(R.id.textViewFieldKey) as TextView
         textViewFieldKey.text = field.key

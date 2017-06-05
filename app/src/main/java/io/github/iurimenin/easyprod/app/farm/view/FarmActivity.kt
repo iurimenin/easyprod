@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import com.afollestad.materialdialogs.DialogAction
 import com.firebase.ui.auth.AuthUI
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
@@ -118,20 +117,15 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
 
     private fun addFarm() {
 
-        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_farm_view, R.string.new_farm)
-        builder?.onAny { materialDialog, dialogAction ->
-                    mPresenter?.saveFarm(materialDialog, dialogAction == DialogAction.POSITIVE) }
-                ?.show()
+        mMaterialDialogUtils?.getDialog(R.layout.new_farm_view, R.string.new_farm, mPresenter)?.show()
     }
 
     private fun updateFarm() {
         // We can select index 0 because the edit item will only be visible
         // when only 1 item is selected
         val farm = mAdapter.selectedItens[0]
-        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_farm_view, R.string.farm)
-        builder?.onAny { materialDialog, dialogAction ->
-                    mPresenter?.saveFarm(materialDialog, dialogAction == DialogAction.POSITIVE) }
-
+        val builder =
+                mMaterialDialogUtils?.getDialog(R.layout.new_farm_view, R.string.farm, mPresenter)
         val textViewFarmKey = builder?.build()?.findViewById(R.id.textViewFarmKey) as TextView
         textViewFarmKey.text = farm.key
 

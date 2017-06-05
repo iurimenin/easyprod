@@ -57,5 +57,11 @@
     <string name="description">Aplicativo desenvolvido para o Android Nanodegree da Udacity.</string>
     <string name="developed_by">Desenvolvido por: <u>Iuri Menin</u></string>
     <string name="url_iuri">https://iurimenin.github.io/</string>
+    <string name="bags">Sacas</string>
+    <string name="new_production">Nova Produção</string>
+    <string name="production">Produção</string>
+    <string name="total_production">Produção Total</string>
+    <string name="total_production_dots">Produção Total:</string>
+    <string name="bags_per_hectare">Sacas/Hectare</string>
 
 </resources>

@@ -21,7 +21,7 @@ class SeasonModel(var key: String, var startYear: Int, var endYear: Int) : Parce
 
     companion object {
 
-        val TAG = SeasonModel::javaClass.name
+        val TAG = "SeasonModel"
 
         @JvmField val CREATOR: Parcelable.Creator<SeasonModel> = object : Parcelable.Creator<SeasonModel> {
             override fun createFromParcel(source: Parcel): SeasonModel = SeasonModel(source)

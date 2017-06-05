@@ -14,6 +14,7 @@ class FirebaseUtils {
     private val FARM_REFERENCE = "/farms/"
     private val FIELD_REFERENCE = "/fields/"
     private val SEASON_REFERENCE = "/seasons/"
+    private val PRODUCTION_REFERENCE = "/productions/"
 
     private var  mUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
 
@@ -58,6 +59,19 @@ class FirebaseUtils {
         reference.keepSynced(true)
         return reference
     }
+
+    fun  getProductionReference(mCultivationKey: String): DatabaseReference {
+        val sb = StringBuilder()
+        sb.append(getEmailWithouDots())
+        sb.append(PRODUCTION_REFERENCE)
+        sb.append("cultivationKey(")
+        sb.append(mCultivationKey)
+        sb.append(")")
+        val reference = mFirebaseDatabase.getReference(sb.toString())
+        reference.keepSynced(true)
+        return reference
+    }
+
 
     private fun  getEmailWithouDots(): String {
         return mUser.email!!.replace(".", "|")

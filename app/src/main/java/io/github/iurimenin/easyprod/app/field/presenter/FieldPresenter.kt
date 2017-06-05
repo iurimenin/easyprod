@@ -16,11 +16,12 @@ import io.github.iurimenin.easyprod.app.field.view.FieldAdapter
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.FirebaseUtils
 import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
+import io.github.iurimenin.easyprod.app.util.PresenterInterface
 
 /**
  * Created by Iuri Menin on 25/05/17.
  */
-class FieldPresenter(var mFarmKey : String?) {
+class FieldPresenter(var mFarmKey : String?) : PresenterInterface {
 
     private var mAdapter: FieldAdapter? = null
     private var mCallback: CallbackInterface? = null
@@ -72,7 +73,7 @@ class FieldPresenter(var mFarmKey : String?) {
         })
     }
 
-    fun saveField(materialDialog: MaterialDialog, isPositive : Boolean) {
+    override fun save(materialDialog: MaterialDialog, isPositive : Boolean) {
 
         if (isPositive) {
 
@@ -106,7 +107,7 @@ private fun  MaterialDialog.isValid(): Boolean {
     val materialEditTextFieldArea: MoneyMaskMaterialEditText =
             this.findViewById(R.id.materialEditTextFieldArea) as MoneyMaskMaterialEditText
 
-    var valid = true;
+    var valid = true
 
     if (materialEditTextFieldName.text.toString().isNullOrEmpty()) {
         materialEditTextFieldName.error =

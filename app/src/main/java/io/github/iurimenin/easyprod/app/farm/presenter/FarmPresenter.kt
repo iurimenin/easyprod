@@ -17,13 +17,14 @@ import io.github.iurimenin.easyprod.app.season.model.SeasonModel
 import io.github.iurimenin.easyprod.app.season.utils.SeasonUtils
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.FirebaseUtils
+import io.github.iurimenin.easyprod.app.util.PresenterInterface
 import io.github.iurimenin.easyprod.app.view.AboutActivity
 
 
 /**
  * Created by Iuri Menin on 23/05/17.
  */
-class FarmPresenter {
+class FarmPresenter : PresenterInterface {
 
     private var mAdapter: FarmAdapter? = null
     private var mContext: Context? = null
@@ -139,7 +140,7 @@ class FarmPresenter {
         this.mContext?.startActivity(i)
     }
 
-    fun saveFarm(materialDialog: MaterialDialog, isPositive : Boolean) {
+    override fun save(materialDialog: MaterialDialog, isPositive : Boolean) {
 
         if (isPositive) {
 

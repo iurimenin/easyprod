@@ -20,12 +20,12 @@
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:met_baseColor="@color/colorPrimary"
         app:met_floatingLabel="highlight"
         app:met_helperTextAlwaysShown="true"
         app:met_primaryColor="@color/colorPrimaryLight"
-        app:met_singleLineEllipsis="true"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:met_singleLineEllipsis="true" />
 
     <io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
         android:id="@+id/materialEditTextFieldArea"

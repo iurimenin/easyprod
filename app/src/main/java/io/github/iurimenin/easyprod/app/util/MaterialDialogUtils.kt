@@ -2,6 +2,7 @@ package io.github.iurimenin.easyprod.app.util
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
+import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import io.github.iurimenin.easyprod.R
 
@@ -10,7 +11,7 @@ import io.github.iurimenin.easyprod.R
  */
 class MaterialDialogUtils(var context : Context) {
 
-    fun getDialog(viewId: Int, title: Int): MaterialDialog.Builder? {
+    fun getDialog(viewId: Int, title: Int, presenter : PresenterInterface ?): MaterialDialog.Builder {
         return MaterialDialog.Builder(context)
                 .title(title)
                 .titleColorRes(R.color.colorPrimary)
@@ -21,6 +22,8 @@ class MaterialDialogUtils(var context : Context) {
                 .positiveText(R.string.text_save)
                 .negativeText(R.string.text_cancel)
                 .autoDismiss(false)
+                .onAny { materialDialog, dialogAction ->
+                    presenter?.save(materialDialog, dialogAction == DialogAction.POSITIVE) }
     }
 }
 

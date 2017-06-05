@@ -1,9 +1,9 @@
 package io.github.iurimenin.easyprod.app.cultivation.presenter
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.AppCompatSpinner
 import android.widget.TextView
-import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -15,14 +15,17 @@ import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.cultivation.model.CultivationModel
 import io.github.iurimenin.easyprod.app.cultivation.view.CultivationActivity
 import io.github.iurimenin.easyprod.app.cultivation.view.CultivationAdapter
+import io.github.iurimenin.easyprod.app.field.model.FieldModel
+import io.github.iurimenin.easyprod.app.production.view.ProductionActivity
 import io.github.iurimenin.easyprod.app.season.model.SeasonModel
 import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.FirebaseUtils
+import io.github.iurimenin.easyprod.app.util.PresenterInterface
 
 /**
  * Created by Iuri Menin on 01/06/17.
  */
-class CultivationPresenter(var mFieldKey : String?) {
+class CultivationPresenter(var mFieldKey : String?) : PresenterInterface {
 
     private val mGson = Gson()
     val mSeasons  = ArrayList<SeasonModel>()
@@ -43,11 +46,11 @@ class CultivationPresenter(var mFieldKey : String?) {
         this.mCallback = null
     }
 
-    fun  clickItem(fieldModel: CultivationModel) {
-        Toast.makeText(mContext, "Tela de produções", Toast.LENGTH_SHORT).show()
-//        val i = Intent(this.mContext, ProductionActivity::class.java)
-//        i.putExtra(CultivationModel.TAG, fieldModel)
-//        this.mContext?.startActivity(i)
+    fun  clickItem(cultivationModel: CultivationModel, mField: FieldModel?) {
+        val i = Intent(this.mContext, ProductionActivity::class.java)
+        i.putExtra(CultivationModel.TAG, cultivationModel)
+        i.putExtra(FieldModel.TAG, mField)
+        this.mContext?.startActivity(i)
     }
 
     fun loadCultivations() {
@@ -78,7 +81,7 @@ class CultivationPresenter(var mFieldKey : String?) {
         })
     }
 
-    fun saveCultivation(materialDialog: MaterialDialog, isPositive : Boolean) {
+    override fun save(materialDialog: MaterialDialog, isPositive : Boolean) {
 
         if (isPositive) {
 

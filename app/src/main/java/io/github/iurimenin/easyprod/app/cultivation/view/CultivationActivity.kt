@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.afollestad.materialdialogs.DialogAction
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.cultivation.model.CultivationModel
@@ -30,7 +29,7 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
     private var mMaterialDialogUtils : MaterialDialogUtils? = null
 
     private val mAdapter: CultivationAdapter = CultivationAdapter(this, ArrayList<CultivationModel>()) {
-        mPresenter?.clickItem(it)
+        mPresenter?.clickItem(it, mField)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,15 +117,14 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
     }
 
     private fun addFiled() {
-        val builder  = mMaterialDialogUtils?.getDialog(R.layout.new_cultivation_view, R.string.new_cultivation)
-
-        builder?.onAny { materialDialog, dialogAction ->
-                    mPresenter?.saveCultivation(materialDialog, dialogAction == DialogAction.POSITIVE) }
+        val builder = mMaterialDialogUtils
+                ?.getDialog(R.layout.new_cultivation_view, R.string.new_cultivation, mPresenter)
 
         val appCompatSpinnerSeason =
                 builder?.build()?.findViewById(R.id.appCompatSpinnerSeason) as AppCompatSpinner
 
-        appCompatSpinnerSeason.adapter = ArrayAdapter(this, R.layout.spinner_season, mPresenter?.mSeasons)
+        appCompatSpinnerSeason.adapter =
+                ArrayAdapter(this, R.layout.spinner_season, mPresenter?.mSeasons)
 
         builder.show()
     }
@@ -136,12 +134,11 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
         // when only 1 item is selected
         val cultivation = mAdapter.selectedItens[0]
 
-        val builder = mMaterialDialogUtils?.getDialog(R.layout.new_cultivation_view, R.string.cultivation)
+        val builder = mMaterialDialogUtils
+                ?.getDialog(R.layout.new_cultivation_view, R.string.cultivation, mPresenter)
 
-        builder?.onAny { materialDialog, dialogAction ->
-                    mPresenter?.saveCultivation(materialDialog, dialogAction == DialogAction.POSITIVE) }
-
-        val textViewCultivationKey = builder?.build()?.findViewById(R.id.textViewCultivationKey) as TextView
+        val textViewCultivationKey =
+                builder?.build()?.findViewById(R.id.textViewCultivationKey) as TextView
         textViewCultivationKey.text = cultivation.key
 
         val materialEditTextCultivationName =
