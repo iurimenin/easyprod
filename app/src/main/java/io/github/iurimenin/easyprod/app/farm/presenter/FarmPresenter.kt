@@ -113,7 +113,7 @@ class FarmPresenter : PresenterInterface {
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
                 val removed = dataSnapshot.getValue(FarmModel::class.java)
                 mAdapter?.removeItem(removed)
-                mCallback?.updateMenuIcons()
+                mCallback?.updateMenuIcons(mAdapter?.itemCount)
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {

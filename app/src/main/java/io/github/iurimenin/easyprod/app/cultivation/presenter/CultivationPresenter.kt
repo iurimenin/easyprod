@@ -70,7 +70,7 @@ class CultivationPresenter(var mFieldKey : String?) : PresenterInterface {
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
                 val removed = dataSnapshot.getValue(CultivationModel::class.java)
                 mAdapter?.removeItem(removed)
-                mCallback?.updateMenuIcons()
+                mCallback?.updateMenuIcons(mAdapter?.itemCount)
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {

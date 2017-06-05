@@ -11,23 +11,24 @@
     <TextView
         android:id="@+id/textViewFieldName"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_height="41dp"
         android:text="@string/field_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp" />
 
     <com.malinskiy.superrecyclerview.SuperRecyclerView
         android:id="@+id/superRecyclerViewCultivation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:scrollbarStyle="insideInset"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFieldName" />
+        app:layout_constraintBottom_toTopOf="@+id/textViewTotalProductionLabel"
+        app:layout_constraintEnd_toEndOf="@id/textViewFieldName"
+        app:layout_constraintStart_toStartOf="@id/textViewFieldName"
+        app:layout_constraintTop_toBottomOf="@id/textViewFieldName"
+        app:scrollbarStyle="insideInset" />
 
     <TextView
         android:id="@+id/textViewTotalProductionLabel"

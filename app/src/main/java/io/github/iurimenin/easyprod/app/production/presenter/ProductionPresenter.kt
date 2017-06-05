@@ -63,7 +63,7 @@ class ProductionPresenter(var mCultivation: CultivationModel?, val totalAreaFiel
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
                 val removed = dataSnapshot.getValue(ProductionModel::class.java)
                 mAdapter?.removeItem(removed)
-                mCallback?.updateMenuIcons()
+                mCallback?.updateMenuIcons(mAdapter?.itemCount)
                 updateTotalProduction()
             }
 
@@ -105,7 +105,7 @@ class ProductionPresenter(var mCultivation: CultivationModel?, val totalAreaFiel
         mAdapter?.mProductions?.forEach { i -> totalBags += i.bags }
 
         val result : Double? = totalBags.div(totalAreaField!!)
-        mCallback?.updateProducation(result ?: 0.0)
+        mCallback?.updateProduction(result ?: 0.0)
     }
 }
 

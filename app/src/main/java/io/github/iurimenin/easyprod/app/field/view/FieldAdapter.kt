@@ -64,7 +64,7 @@ class FieldAdapter(val mCallback : CallbackInterface,
                 itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDivider))
             }
 
-            callback.updateMenuIcons()
+            callback.updateMenuIcons(selectedItens.size)
         }
     }
 
@@ -92,7 +92,7 @@ class FieldAdapter(val mCallback : CallbackInterface,
 
     fun removeSelecionts() {
         selectedItens.clear()
-        mCallback.updateMenuIcons()
+        mCallback.updateMenuIcons(itemCount)
         this.notifyDataSetChanged()
     }
 }

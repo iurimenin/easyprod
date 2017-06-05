@@ -65,7 +65,7 @@ class CultivationAdapter(val mCallback : CallbackInterface,
                 itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDivider))
             }
 
-            callback.updateMenuIcons()
+            callback.updateMenuIcons(selectedItens.size)
         }
     }
 
@@ -94,7 +94,7 @@ class CultivationAdapter(val mCallback : CallbackInterface,
 
     fun removeSelecionts() {
         selectedItens.clear()
-        mCallback.updateMenuIcons()
+        mCallback.updateMenuIcons(itemCount)
         this.notifyDataSetChanged()
     }
 }

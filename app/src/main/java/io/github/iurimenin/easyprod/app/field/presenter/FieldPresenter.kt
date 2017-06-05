@@ -62,7 +62,7 @@ class FieldPresenter(var mFarmKey : String?) : PresenterInterface {
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
                 val removed = dataSnapshot.getValue(FieldModel::class.java)
                 mAdapter?.removeItem(removed)
-                mCallback?.updateMenuIcons()
+                mCallback?.updateMenuIcons(mAdapter?.itemCount)
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {

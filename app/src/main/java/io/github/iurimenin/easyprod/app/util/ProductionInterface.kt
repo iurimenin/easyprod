@@ -5,5 +5,5 @@ package io.github.iurimenin.easyprod.app.util
  */
 interface ProductionInterface : CallbackInterface {
 
-    fun updateProducation(result: Double)
+    fun updateProduction(result: Double)
 }

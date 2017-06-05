@@ -3,7 +3,6 @@ package io.github.iurimenin.easyprod.app.production.view
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -16,15 +15,14 @@ import io.github.iurimenin.easyprod.app.production.presenter.ProductionPresenter
 import io.github.iurimenin.easyprod.app.util.MaterialDialogUtils
 import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
 import io.github.iurimenin.easyprod.app.util.ProductionInterface
+import io.github.iurimenin.easyprod.app.view.EasyProdActitivty
 import kotlinx.android.synthetic.main.activity_production.*
 import java.text.NumberFormat
 
-class ProductionActivity : AppCompatActivity(), ProductionInterface {
+class ProductionActivity : EasyProdActitivty(), ProductionInterface {
 
-    private var mCultivation: CultivationModel? = null
     private var mField: FieldModel? = null
-    private var mMenuItemEdit: MenuItem? = null
-    private var mMenuItemDelete: MenuItem? = null
+    private var mCultivation: CultivationModel? = null
     private var mPresenter: ProductionPresenter? = null
     private var mMaterialDialogUtils : MaterialDialogUtils? = null
 
@@ -66,7 +64,7 @@ class ProductionActivity : AppCompatActivity(), ProductionInterface {
 
         mPresenter?.bindView(this, mAdapter)
         mPresenter?.loadProductions()
-        updateMenuIcons()
+        super.updateMenuIcons(mAdapter.itemCount)
     }
 
     override fun onDestroy() {
@@ -97,31 +95,10 @@ class ProductionActivity : AppCompatActivity(), ProductionInterface {
         return true
     }
 
-    override fun updateProducation(result: Double) {
+    override fun updateProduction(result: Double) {
         textViewTotalProduction.text = NumberFormat.getCurrencyInstance()
                 .format(result).replace(NumberFormat.getCurrencyInstance()
                 .currency.symbol, ""). plus(" ").plus(getString(R.string.bags_per_hectare))
-    }
-
-    override fun updateMenuIcons() {
-
-        when (mAdapter.selectedItens.size) {
-
-            0 -> {
-                mMenuItemDelete?.isVisible = false
-                mMenuItemEdit?.isVisible = false
-            }
-
-            1 -> {
-                mMenuItemDelete?.isVisible = true
-                mMenuItemEdit?.isVisible = true
-            }
-
-            !in(0..1) -> {
-                mMenuItemDelete?.isVisible = true
-                mMenuItemEdit?.isVisible = false
-            }
-        }
     }
 
     private fun addProduction() {

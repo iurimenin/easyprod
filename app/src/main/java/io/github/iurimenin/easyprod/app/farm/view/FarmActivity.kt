@@ -2,7 +2,6 @@ package io.github.iurimenin.easyprod.app.farm.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -12,20 +11,16 @@ import com.rengwuxian.materialedittext.MaterialEditText
 import io.github.iurimenin.easyprod.R
 import io.github.iurimenin.easyprod.app.farm.model.FarmModel
 import io.github.iurimenin.easyprod.app.farm.presenter.FarmPresenter
-import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.MaterialDialogUtils
+import io.github.iurimenin.easyprod.app.view.EasyProdActitivty
 import io.github.iurimenin.easyprod.app.view.LoginActivity
 import kotlinx.android.synthetic.main.activity_farms.*
 
 /**
  * Created by Iuri Menin on 18/05/17.
  */
-class FarmActivity : AppCompatActivity(), CallbackInterface {
+class FarmActivity : EasyProdActitivty() {
 
-    private var mMenuItemEdit: MenuItem? = null
-    private var mMenuItemAbout: MenuItem? = null
-    private var mMenuItemLogout: MenuItem? = null
-    private var mMenuItemDelete: MenuItem? = null
     private var mPresenter: FarmPresenter? = null
     private var mMaterialDialogUtils : MaterialDialogUtils? = null
 
@@ -54,7 +49,7 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
 
         mPresenter?.bindView(this, mAdapter)
         mPresenter?.loadFarms()
-        this.updateMenuIcons()
+        super.updateMenuIcons(mAdapter.itemCount)
     }
 
     override fun onDestroy() {
@@ -86,33 +81,6 @@ class FarmActivity : AppCompatActivity(), CallbackInterface {
             R.id.menuMainItemDelete -> mPresenter?.deleteSelectedItems(mAdapter.selectedItens)
         }
         return true
-    }
-
-    override fun updateMenuIcons() {
-
-        when (mAdapter.selectedItens.size) {
-
-            0 -> {
-                mMenuItemDelete?.isVisible = false
-                mMenuItemEdit?.isVisible = false
-                mMenuItemAbout?.isVisible = true
-                mMenuItemLogout?.isVisible = true
-            }
-
-            1 -> {
-                mMenuItemDelete?.isVisible = true
-                mMenuItemEdit?.isVisible = true
-                mMenuItemAbout?.isVisible = false
-                mMenuItemLogout?.isVisible = false
-            }
-
-            !in(0..1) -> {
-                mMenuItemDelete?.isVisible = true
-                mMenuItemEdit?.isVisible = false
-                mMenuItemAbout?.isVisible = false
-                mMenuItemLogout?.isVisible = false
-            }
-        }
     }
 
     private fun addFarm() {

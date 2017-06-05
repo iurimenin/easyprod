@@ -3,7 +3,6 @@ package io.github.iurimenin.easyprod.app.cultivation.view
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatSpinner
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
@@ -16,15 +15,13 @@ import io.github.iurimenin.easyprod.app.cultivation.model.CultivationModel
 import io.github.iurimenin.easyprod.app.cultivation.presenter.CultivationPresenter
 import io.github.iurimenin.easyprod.app.field.model.FieldModel
 import io.github.iurimenin.easyprod.app.season.model.SeasonModel
-import io.github.iurimenin.easyprod.app.util.CallbackInterface
 import io.github.iurimenin.easyprod.app.util.MaterialDialogUtils
+import io.github.iurimenin.easyprod.app.view.EasyProdActitivty
 import kotlinx.android.synthetic.main.activity_cultivation.*
 
-class CultivationActivity : AppCompatActivity(), CallbackInterface {
+class CultivationActivity : EasyProdActitivty() {
 
     private var mField: FieldModel? = null
-    private var mMenuItemEdit: MenuItem? = null
-    private var mMenuItemDelete: MenuItem? = null
     private var mPresenter: CultivationPresenter? = null
     private var mMaterialDialogUtils : MaterialDialogUtils? = null
 
@@ -64,7 +61,7 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
 
         mPresenter?.bindView(this, mAdapter)
         mPresenter?.loadCultivations()
-        updateMenuIcons()
+        super.updateMenuIcons(mAdapter.itemCount)
     }
 
     override fun onDestroy() {
@@ -93,27 +90,6 @@ class CultivationActivity : AppCompatActivity(), CallbackInterface {
             R.id.menuCultivationItemDelete -> mPresenter?.deleteSelectedItems(mAdapter.selectedItens)
         }
         return true
-    }
-
-    override fun updateMenuIcons() {
-
-        when (mAdapter.selectedItens.size) {
-
-            0 -> {
-                mMenuItemDelete?.isVisible = false
-                mMenuItemEdit?.isVisible = false
-            }
-
-            1 -> {
-                mMenuItemDelete?.isVisible = true
-                mMenuItemEdit?.isVisible = true
-            }
-
-            !in(0..1) -> {
-                mMenuItemDelete?.isVisible = true
-                mMenuItemEdit?.isVisible = false
-            }
-        }
     }
 
     private fun addFiled() {
