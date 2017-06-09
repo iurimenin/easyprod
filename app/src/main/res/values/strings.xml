@@ -63,5 +63,9 @@
     <string name="total_production">Produção Total</string>
     <string name="total_production_dots">Produção Total:</string>
     <string name="bags_per_hectare">Sacas/Hectare</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="empty_widget_list">Você ainda não informou nenhuma produção</string>
+    <string name="last_productions">Ultimas produções informadas</string>
 
 </resources>

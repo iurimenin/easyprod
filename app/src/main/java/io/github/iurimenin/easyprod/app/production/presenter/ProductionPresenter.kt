@@ -1,6 +1,7 @@
 package io.github.iurimenin.easyprod.app.production.presenter
 
 import android.content.Context
+import android.content.Intent
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.firebase.database.ChildEventListener
@@ -15,6 +16,9 @@ import io.github.iurimenin.easyprod.app.util.FirebaseUtils
 import io.github.iurimenin.easyprod.app.util.MoneyMaskMaterialEditText
 import io.github.iurimenin.easyprod.app.util.PresenterInterface
 import io.github.iurimenin.easyprod.app.util.ProductionInterface
+import io.github.iurimenin.easyprod.app.widget.model.WidgetModel
+import io.github.iurimenin.easyprod.app.widget.utils.WidgetSharedPreferences
+import io.github.iurimenin.easyprod.app.widget.view.LastProductionsWidget
 
 /**
  * Created by Iuri Menin on 01/06/17.
@@ -25,12 +29,14 @@ class ProductionPresenter(var mCultivation: CultivationModel?, val totalAreaFiel
     private var mContext: Context? = null
     private var mAdapter: ProductionAdapter? = null
     private var mCallback: ProductionInterface? = null
+    private var mWidgetPreferences : WidgetSharedPreferences? = null
     private val mProductionRef = FirebaseUtils().getProductionReference(mCultivation?.key!!)
 
     fun  bindView(productionActivity: ProductionActivity, adapter : ProductionAdapter) {
         this.mAdapter = adapter
         this.mContext = productionActivity
         this.mCallback = productionActivity
+        this.mWidgetPreferences = WidgetSharedPreferences(productionActivity)
     }
 
     fun unBindView() {
@@ -51,6 +57,7 @@ class ProductionPresenter(var mCultivation: CultivationModel?, val totalAreaFiel
                 val vo = dataSnapshot.getValue(ProductionModel::class.java)
                 mAdapter?.addItem(vo)
                 updateTotalProduction()
+                updateWidget()
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
@@ -58,6 +65,7 @@ class ProductionPresenter(var mCultivation: CultivationModel?, val totalAreaFiel
                 val updated = dataSnapshot.getValue(ProductionModel::class.java)
                 mAdapter?.updateItem(updated)
                 updateTotalProduction()
+                updateWidget()
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
@@ -65,6 +73,7 @@ class ProductionPresenter(var mCultivation: CultivationModel?, val totalAreaFiel
                 mAdapter?.removeItem(removed)
                 mCallback?.updateMenuIcons(mAdapter?.itemCount)
                 updateTotalProduction()
+                updateWidget()
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
@@ -106,6 +115,22 @@ class ProductionPresenter(var mCultivation: CultivationModel?, val totalAreaFiel
 
         val result : Double? = totalBags.div(totalAreaField!!)
         mCallback?.updateProduction(result ?: 0.0)
+    }
+
+    private fun updateWidget() {
+
+        val list : ArrayList<WidgetModel> = ArrayList()
+        mAdapter?.mProductions?.forEach {
+            i -> list.add(
+                WidgetModel(i.key, i.bags, mCultivation?.key, mCultivation?.name!!,
+                        mCultivation?.seasonName!!))
+        }
+
+        mWidgetPreferences?.save(list)
+
+        val dataUpdatedIntent = Intent(LastProductionsWidget.ACTION_DATA_UPDATED)
+                .setPackage(mContext?.packageName)
+        mContext?.sendBroadcast(dataUpdatedIntent)
     }
 }
 

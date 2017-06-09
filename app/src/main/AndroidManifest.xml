@@ -32,7 +32,24 @@
         <activity android:name=".app.field.view.FieldActivity" />
         <activity android:name=".app.production.view.ProductionActivity" />
         <activity android:name=".app.cultivation.view.CultivationActivity" />
-        <activity android:name=".app.view.AboutActivity"/>
+        <activity android:name=".app.view.AboutActivity" />
+
+        <receiver android:name=".app.widget.view.LastProductionsWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="io.github.iurimenin.easyprod.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/last_productions_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".app.widget.service.ProductionsWidgetRemoteViewsService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
