@@ -11,8 +11,8 @@ import io.github.iurimenin.easyprod.app.widget.model.WidgetModel
 class WidgetSharedPreferences(var context: Context) {
 
     val gson = Gson()
-    val type = object : TypeToken<ArrayList<WidgetModel>>() {}.type
-    val sharedPref = context.getSharedPreferences("EASYPROD", Context.MODE_PRIVATE)
+    val type = object : TypeToken<ArrayList<WidgetModel>>() {}.type!!
+    val sharedPref = context.getSharedPreferences("EASYPROD", Context.MODE_PRIVATE)!!
 
     fun getStored(): ArrayList<WidgetModel> {
 

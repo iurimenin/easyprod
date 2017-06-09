@@ -1,6 +1,7 @@
 package io.github.iurimenin.easyprod.app.season.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.github.iurimenin.easyprod.app.season.model.SeasonModel
@@ -11,8 +12,8 @@ import io.github.iurimenin.easyprod.app.season.model.SeasonModel
 class SeasonUtils(context: Context) {
 
     val gson = Gson()
-    val type = object : TypeToken<ArrayList<SeasonModel>>() {}.type
-    val sharedPref = context.getSharedPreferences("EASYPROD", Context.MODE_PRIVATE)
+    val type = object : TypeToken<ArrayList<SeasonModel>>() {}.type!!
+    val sharedPref = context.getSharedPreferences("EASYPROD", Context.MODE_PRIVATE)!!
 
     fun addStoredSeasonsToList(listSeason: ArrayList<SeasonModel>): ArrayList<SeasonModel> {
 

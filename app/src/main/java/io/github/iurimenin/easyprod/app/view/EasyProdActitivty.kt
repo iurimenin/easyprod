@@ -15,8 +15,8 @@ abstract class EasyProdActitivty : AppCompatActivity(), CallbackInterface {
     protected var mMenuItemAbout: MenuItem? = null
     protected var mMenuItemLogout: MenuItem? = null
 
-    override fun updateMenuIcons(itensCount : Int?) {
-        when (itensCount) {
+    override fun updateMenuIcons(itemsCount: Int?) {
+        when (itemsCount) {
 
             0 -> {
                 mMenuItemEdit?.isVisible = false

@@ -33,22 +33,13 @@
     <string name="button_add_field">Botão adicionar talhão</string>
     <string name="new_field">Novo Talhão</string>
     <string name="total_area">Área total em Hectares (ha)</string>
-    <string name="production_farms_two_dots">Produção para área:</string>
     <string name="season">Safra</string>
     <string name="farms">Fazendas</string>
     <string name="fiels">Talhões</string>
     <string name="seasons">Safras</string>
-    <string name="new_season">Nova Safra</string>
     <string name="field">Talhão</string>
     <string name="farm">Fazenda</string>
-    <string name="season_start">Ano início</string>
-    <string name="season_end">Ano fim</string>
-    <string name="title_activity_main">MainActivity</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
     <string name="new_cultivation">Nova Cultura</string>
     <string name="cultivation">Cultura</string>
     <string name="cultivation_name">Nome da cultura</string>
@@ -63,8 +54,6 @@
     <string name="total_production">Produção Total</string>
     <string name="total_production_dots">Produção Total:</string>
     <string name="bags_per_hectare">Sacas/Hectare</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="empty_widget_list">Você ainda não informou nenhuma produção</string>
     <string name="last_productions">Ultimas produções informadas</string>
 

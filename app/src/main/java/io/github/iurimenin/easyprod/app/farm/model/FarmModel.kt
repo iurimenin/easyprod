@@ -15,7 +15,7 @@ class FarmModel(var key: String, var name : String) : Parcelable {
         //Firebase needs the constructor without parameters
     }
 
-    protected constructor (source : Parcel) : this (
+    private constructor (source : Parcel) : this (
             source.readString(),
             source.readString()
     )

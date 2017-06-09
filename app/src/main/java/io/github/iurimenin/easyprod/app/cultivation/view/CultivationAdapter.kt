@@ -19,7 +19,7 @@ class CultivationAdapter(val mCallback : CallbackInterface,
                          val clickListener: (CultivationModel) -> Unit) :
         RecyclerView.Adapter<CultivationAdapter.ViewHolder>() {
 
-    val selectedItens = ArrayList<CultivationModel>()
+    val selectedItems = ArrayList<CultivationModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CultivationAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_cultivation, parent, false)
@@ -27,7 +27,7 @@ class CultivationAdapter(val mCallback : CallbackInterface,
     }
 
     override fun onBindViewHolder(holder: CultivationAdapter.ViewHolder, position: Int) {
-        holder.bindCultivation(mCultivations[position], selectedItens, holder.itemView.context, mCallback)
+        holder.bindCultivation(mCultivations[position], selectedItems, holder.itemView.context, mCallback)
     }
 
     override fun getItemCount() = mCultivations.size
@@ -36,36 +36,36 @@ class CultivationAdapter(val mCallback : CallbackInterface,
                      val clickListener: (CultivationModel) -> Unit) :
             RecyclerView.ViewHolder(view) {
 
-        fun bindCultivation(field: CultivationModel, selectedItens: ArrayList<CultivationModel>, context: Context,
-                      callback: CallbackInterface) {
+        fun bindCultivation(field: CultivationModel, selectedItems: ArrayList<CultivationModel>, context: Context,
+                            callback: CallbackInterface) {
             with(field) {
                 itemView.textViewCultivation.text = name
                 itemView.textViewSeason.text = seasonName
                 itemView.constraintLayoutItemCultivation.setOnClickListener {
-                    if (selectedItens.size > 0)
-                        selectDeselectItem(itemView, field, selectedItens, context, callback)
+                    if (selectedItems.size > 0)
+                        selectDeselectItem(itemView, field, selectedItems, context, callback)
                     else
                         clickListener(this)
                 }
                 itemView.constraintLayoutItemCultivation.setOnLongClickListener {
-                    selectDeselectItem(itemView, field, selectedItens, context, callback); true
+                    selectDeselectItem(itemView, field, selectedItems, context, callback); true
                 }
                 itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons))
             }
         }
 
         private fun selectDeselectItem(itemView: View?, field: CultivationModel,
-                                       selectedItens: ArrayList<CultivationModel>, context: Context,
+                                       selectedItems: ArrayList<CultivationModel>, context: Context,
                                        callback : CallbackInterface) {
-            if(selectedItens.contains(field)){
-                selectedItens.remove(field)
+            if(selectedItems.contains(field)){
+                selectedItems.remove(field)
                 itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorIcons))
             } else {
-                selectedItens.add(field)
+                selectedItems.add(field)
                 itemView?.setBackgroundColor(ContextCompat.getColor(context, R.color.colorDivider))
             }
 
-            callback.updateMenuIcons(selectedItens.size)
+            callback.updateMenuIcons(selectedItems.size)
         }
     }
 
@@ -88,12 +88,12 @@ class CultivationAdapter(val mCallback : CallbackInterface,
 
     fun removeItem(field: CultivationModel) {
         mCultivations.remove(field)
-        selectedItens.remove(field)
+        selectedItems.remove(field)
         this.notifyDataSetChanged()
     }
 
-    fun removeSelecionts() {
-        selectedItens.clear()
+    fun removeSelection() {
+        selectedItems.clear()
         mCallback.updateMenuIcons(itemCount)
         this.notifyDataSetChanged()
     }

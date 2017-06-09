@@ -87,7 +87,7 @@ class CultivationActivity : EasyProdActitivty() {
 
             R.id.menuCultivationItemEdit -> updateCultivation()
 
-            R.id.menuCultivationItemDelete -> mPresenter?.deleteSelectedItems(mAdapter.selectedItens)
+            R.id.menuCultivationItemDelete -> mPresenter?.deleteSelectedItems(mAdapter.selectedItems)
         }
         return true
     }
@@ -108,7 +108,7 @@ class CultivationActivity : EasyProdActitivty() {
     private fun updateCultivation() {
         //We can select index 0 because the edit item will only be visible
         // when only 1 item is selected
-        val cultivation = mAdapter.selectedItens[0]
+        val cultivation = mAdapter.selectedItems[0]
 
         val builder = mMaterialDialogUtils
                 ?.getDialog(R.layout.new_cultivation_view, R.string.cultivation, mPresenter)

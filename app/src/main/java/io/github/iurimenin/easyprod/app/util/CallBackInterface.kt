@@ -5,5 +5,5 @@ package io.github.iurimenin.easyprod.app.util
  */
 interface CallbackInterface {
 
-    fun updateMenuIcons(itensCount : Int?)
+    fun updateMenuIcons(itemsCount: Int?)
 }

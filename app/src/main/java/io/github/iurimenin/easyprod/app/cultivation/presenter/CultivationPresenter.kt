@@ -105,7 +105,7 @@ class CultivationPresenter(var mFieldKey : String?) : PresenterInterface {
                         fieldName, season.key, season.toString())
                 field.save(mFieldKey!!)
                 materialDialog.dismiss()
-                mAdapter?.removeSelecionts()
+                mAdapter?.removeSelection()
             }
         } else {
             materialDialog.dismiss()
